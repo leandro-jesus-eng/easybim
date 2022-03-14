@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-public class Composicoes {
+@EqualsAndHashCode (callSuper = true)
+public class Composicoes extends ItensComposicao {
 	
 	private String descricaoClasse;
 	private String siglaClasse;
@@ -18,7 +20,7 @@ public class Composicoes {
 	private String codigoComposicao;
 	private String descricaoComposicao;
 	private String unidade;
-	private String origemPreco;
+	private OrigemPreco origemPreco;
 	private double custoTotal;	
 	private double custoMaoObra;
 	private double percentualMaoObra;
@@ -34,8 +36,6 @@ public class Composicoes {
 	private String vinculo;
 
 	@ToString.Exclude
-	private List<Composicoes> itemComposicao = new ArrayList<Composicoes>();
+	private List<ItensComposicao> itensComposicao = new ArrayList<ItensComposicao>();
 	
-	@ToString.Exclude
-	private List<Insumo> itemInsumo = new ArrayList<Insumo>();
 }
