@@ -7,7 +7,7 @@ public class ItensComposicao {
 	private String tipoItem;
 	private String codigoItem;
 	private String descricaoItem;
-	private String unidadeItem;
+	private UnidadesMedida unidadeItem;
 	private String origemPrecoItem;
 	private double coeficiente;
 	private double precoUnitario;

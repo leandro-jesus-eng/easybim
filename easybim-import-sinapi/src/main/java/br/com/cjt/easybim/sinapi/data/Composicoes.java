@@ -19,7 +19,7 @@ public class Composicoes extends ItensComposicao {
 	private String descricaoAgrupador;
 	private String codigoComposicao;
 	private String descricaoComposicao;
-	private String unidade;
+	private UnidadesMedida unidade;
 	private OrigemPreco origemPreco;
 	private double custoTotal;	
 	private double custoMaoObra;
