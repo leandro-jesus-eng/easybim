@@ -21,5 +21,5 @@ public class TabelaCustosIndices {
 	private Date dataPreco;
 	
 	@ToString.Exclude
-	private List<Composicoes> composicoes = new ArrayList<Composicoes>();
+	private List<Composicao> composicoes = new ArrayList<Composicao>();
 }

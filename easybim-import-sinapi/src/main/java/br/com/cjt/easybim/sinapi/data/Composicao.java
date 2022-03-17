@@ -9,7 +9,7 @@ import lombok.ToString;
 
 @Data
 @EqualsAndHashCode (callSuper = true)
-public class Composicoes extends ItensComposicao {
+public class Composicao extends ItemComposicao {
 	
 	private String descricaoClasse;
 	private String siglaClasse;
@@ -19,8 +19,8 @@ public class Composicoes extends ItensComposicao {
 	private String descricaoAgrupador;
 	private String codigoComposicao;
 	private String descricaoComposicao;
-	private UnidadesMedida unidade;
-	private OrigemPreco origemPreco;
+	private String unidade;
+	private String origemPreco;
 	private double custoTotal;	
 	private double custoMaoObra;
 	private double percentualMaoObra;
@@ -36,6 +36,6 @@ public class Composicoes extends ItensComposicao {
 	private String vinculo;
 
 	@ToString.Exclude
-	private List<ItensComposicao> itensComposicao = new ArrayList<ItensComposicao>();
+	private List<ItemComposicao> itensComposicao = new ArrayList<ItemComposicao>();
 	
 }

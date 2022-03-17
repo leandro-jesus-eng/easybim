@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode (callSuper = true)
-public class Insumo extends ItensComposicao {
+public class Insumo extends ItemComposicao {
 	
 	 private String codigoInsumo;
 	 private String descricaoInsumo;

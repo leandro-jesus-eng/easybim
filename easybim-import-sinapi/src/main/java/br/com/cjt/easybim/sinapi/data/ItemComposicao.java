@@ -3,7 +3,7 @@ package br.com.cjt.easybim.sinapi.data;
 import lombok.Data;
 
 @Data
-public class ItensComposicao {	
+public class ItemComposicao {	
 	private String tipoItem;
 	private String codigoItem;
 	private String descricaoItem;
