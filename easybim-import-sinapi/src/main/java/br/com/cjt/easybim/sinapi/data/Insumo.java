@@ -1,15 +1,14 @@
 package br.com.cjt.easybim.sinapi.data;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode (callSuper = true)
-public class Insumo extends ItemComposicao {
-	
-	 private String codigoInsumo;
-	 private String descricaoInsumo;
-	 private String unidadeInsumo;
-	 private OrigemPreco origemPrecoInsumo;
-	 private double precoMedianoInsumo;
+public class Insumo {
+
+	private String codigoInsumo;
+	private String descricaoInsumo;
+	private String unidadeInsumo;
+	private String origemPrecoInsumo;
+	private double precoMedianoInsumo;
+
 }

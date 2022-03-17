@@ -18,8 +18,11 @@ public class TabelaCustosIndices {
 	private String referenciaColeta;
 	private Date dataReferenciaTecnica;
 	private String localidade;
-	private Date dataPreco;
+	private String dataPreco;
 	
 	@ToString.Exclude
 	private List<Composicao> composicoes = new ArrayList<Composicao>();
+	
+	@ToString.Exclude
+	private List<Insumo> insumos = new ArrayList<Insumo>();
 }
