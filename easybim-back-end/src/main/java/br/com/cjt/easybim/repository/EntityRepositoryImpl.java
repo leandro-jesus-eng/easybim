@@ -30,9 +30,9 @@ public class EntityRepositoryImpl<T> implements EntityRepository<T> {
 	}
 
 	@Override
-	public <S extends T> S save(S entity) {				
-		//AbstractEntity ae = (AbstractEntity) entity;		
+	public <S extends T> S save(S entity) {
 		/* ativar para eu controlar a geração de ID, ou ele vai gerar sozinho im sequencia de carcateres */
+		//AbstractEntity ae = (AbstractEntity) entity;
 		//Long id = generateSequence(entity.getClass().getSimpleName());		
 		//ae.setId(id.toString());		
 		

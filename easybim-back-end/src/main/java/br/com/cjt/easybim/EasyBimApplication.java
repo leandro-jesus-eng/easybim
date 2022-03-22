@@ -10,6 +10,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class EasyBimApplication {
 
 	public static void main(String[] args) {
+		//SpringApplication springApplication = new SpringApplication(EasyBimApplication.class);
+		//springApplication.addListeners(new CascadingMongoEventListener<>());
+		//springApplication.run(args);
 		SpringApplication.run(EasyBimApplication.class, args);
 	}
 }

@@ -4,7 +4,7 @@ public enum OrigemPreco {
 	
 	COEFICIENTE_REPRESENTATIVIDADE("Coeficiente de Representatividade"),
 	COLETADO("Coletado"),
-	ATRIBUIDO_SAO_PAULO("Atribuído São Paulo");
+	ATRIBUIDO_SAO_PAULO("Atribuï¿½do Sï¿½o Paulo");
 
     private String text;
 
@@ -15,5 +15,4 @@ public enum OrigemPreco {
     public String getText() {
         return text;
     }
-
 }

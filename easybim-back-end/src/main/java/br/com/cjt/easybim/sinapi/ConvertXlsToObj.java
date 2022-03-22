@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.ManagedBean;
+
 import com.aspose.cells.Cells;
 import com.aspose.cells.Range;
 import com.aspose.cells.Workbook;
@@ -15,10 +17,12 @@ import com.aspose.cells.Workbook;
 import br.com.cjt.easybim.sinapi.data.Composicao;
 import br.com.cjt.easybim.sinapi.data.Insumo;
 import br.com.cjt.easybim.sinapi.data.ItemComposicao;
+import br.com.cjt.easybim.sinapi.data.NomeTabelas;
 import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 
+@ManagedBean
 public class ConvertXlsToObj {
-
+	
 	private TabelaCustosIndices tabelaCustosIndices = null;
 	private Workbook workbook = null;
 	private Range range = null;
@@ -31,6 +35,8 @@ public class ConvertXlsToObj {
 	static int dataPrecoRowIndex = 5;
 	static int rowHeader = 6;
 
+	// TODO adicionar código agrupador 
+	
 	static int descricaoClasseColumnIndex = 0;
 	static int siglaClasseColumnIndex = 1;
 	static int descricaoTipo1ColumnIndex = 2;
@@ -102,6 +108,9 @@ public class ConvertXlsToObj {
 		return composicao;
 	}
 
+	/**
+	 * TODO ... pegar a macro classe na tabela família de insumos
+	 */
 	private void parseInsumos() {
 		// access CellsCollection of the worksheet containing data to be converted
 		Cells cells = workbook.getWorksheets().get(1).getCells();
@@ -138,7 +147,7 @@ public class ConvertXlsToObj {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		tabelaCustosIndices.setId(null);
+		tabelaCustosIndices.setNome(NomeTabelas.SICRO.getText());
 	}
 
 	private void parseComposicoes() {
