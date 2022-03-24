@@ -2,6 +2,7 @@ package br.com.cjt.easybim.sinapi.data;
 
 import javax.persistence.Id;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -26,5 +27,15 @@ public class Insumo extends AbstractEntity {
 	private String origemPrecoInsumo;
 	@Field
 	private double precoMedianoInsumo;
-	
+
+	@DBRef (lazy = false)
+	private Insumo insumoRepresentativo;
+	@Field
+	private double coeficienteInsumoRepresentativo;
+	@Field
+	private String categoria;
+	@Field
+	private String macroClasse;
+	@Field
+	private String vinculo;	
 }

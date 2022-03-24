@@ -14,6 +14,7 @@ import com.aspose.cells.Cells;
 import com.aspose.cells.Range;
 import com.aspose.cells.Workbook;
 
+import br.com.cjt.easybim.sinapi.data.CategoriaInsumo;
 import br.com.cjt.easybim.sinapi.data.Composicao;
 import br.com.cjt.easybim.sinapi.data.Insumo;
 import br.com.cjt.easybim.sinapi.data.ItemComposicao;
@@ -76,6 +77,14 @@ public class ConvertXlsToObj {
 	static int unidadeInsumoColumnIndex = 2;
 	static int origemPrecoInsumoColumnIndex = 3;
 	static int precoMedianoInsumoColumnIndex = 4;
+	
+	static int codigoInsumoRepresentativoFamiliaColumnIndex = 0;
+	static int codigoInsumoFamiliaColumnIndex = 1;
+	static int coeficienteRepresentativoFamiliaColumnIndex = 4;
+	static int categoriaFamiliaColumnIndex = 5;
+	static int macroClasseFamiliaColumnIndex = 6;
+	static int vinculoFamiliaColumnIndex = 7;
+	
 
 	private Map<String, Insumo> insumoMap = null;
 
@@ -112,7 +121,7 @@ public class ConvertXlsToObj {
 	 * TODO ... pegar a macro classe na tabela família de insumos
 	 */
 	private void parseInsumos() {
-		// access CellsCollection of the worksheet containing data to be converted
+		
 		Cells cells = workbook.getWorksheets().get(1).getCells();
 
 		// create a range of cells containing data to be exported
@@ -130,6 +139,25 @@ public class ConvertXlsToObj {
 
 			tabelaCustosIndices.getInsumos().add(insumo);
 			insumoMap.put(insumo.getCodigoInsumo(), insumo);
+		}
+		
+		
+		// ler de outra planilha - familia de insumos
+		cells = workbook.getWorksheets().get(3).getCells();
+
+		// create a range of cells containing data to be exported
+		range = cells.createRange(0, 0, cells.getLastCell().getRow() + 1, cells.getLastCell().getColumn() + 1);
+		
+		for (int row = 1; row < range.getRowCount(); row++) {
+			Insumo insumo = insumoMap.get(getStringValue(row, codigoInsumoFamiliaColumnIndex));
+			
+			insumo.setCategoria(getStringValue(row, categoriaFamiliaColumnIndex));
+			if (insumo.getCategoria().equals(CategoriaInsumo.REPRESENTADO.getText()))
+				insumo.setInsumoRepresentativo(insumoMap.get(getStringValue(row, codigoInsumoRepresentativoFamiliaColumnIndex)));
+			insumo.setCoeficienteInsumoRepresentativo(getDoubleValue(row, coeficienteRepresentativoFamiliaColumnIndex));
+			
+			insumo.setMacroClasse(getStringValue(row, macroClasseFamiliaColumnIndex));
+			insumo.setVinculo(getStringValue(row, vinculoFamiliaColumnIndex));
 		}
 	}
 
@@ -193,7 +221,7 @@ public class ConvertXlsToObj {
 				composicao.setPercentualAtribuidoSaoPaulo(getDoubleValue(row, percentualAtribuidoSaoPauloColumnIndex));
 				composicao.setVinculo(getStringValue(row, vinculoColumnIndex));
 
-			} else { // ent�o � um item da composicao
+			} else { // então é item da composicao
 
 				ItemComposicao itemComposicao = new ItemComposicao();
 				itemComposicao.setCodigoItem(getStringValue(row, codigoItemColumnIndex));
@@ -228,7 +256,6 @@ public class ConvertXlsToObj {
 		System.out.println("Numero de composicoes no MAP "+ composicaoMap.size() );
 		System.out.println("Numero de composicoes no tabela "+ tabelaCustosIndices.getComposicoes().size() );
 		System.out.println("Numero de insumos no tabela "+ tabelaCustosIndices.getInsumos().size() );
-		System.out.println("Importacao finalizada com sucesso");
 	}
 
 	public TabelaCustosIndices parse(InputStream inputStream) {
@@ -259,18 +286,12 @@ public class ConvertXlsToObj {
 			
 			System.out.println("Numero de composicoes no MAP "+ composicaoMap.size() );
 			System.out.println("Numero de composicoes no tabela "+ tabelaCustosIndices.getComposicoes().size() );
-			System.out.println("Numero de insumos no tabela "+ tabelaCustosIndices.getInsumos().size() );
-			System.out.println("Importacao finalizada com sucesso");
+			System.out.println("Numero de insumos na tabela "+ tabelaCustosIndices.getInsumos().size() );
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return tabelaCustosIndices;
-	}
-
-	/**/
-	public static void main(String[] args) {
-		new ConvertXlsToObj().parse("SINAPI_Desonerado.xls");
 	}
 }

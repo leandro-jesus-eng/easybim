@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.cjt.easybim.controller.ResourceNotFoundException;
+import br.com.cjt.easybim.controller.exception.ResourceNotFoundException;
 import br.com.cjt.easybim.data.Country;
 import br.com.cjt.easybim.data.Gender;
 import br.com.cjt.easybim.data.Person;

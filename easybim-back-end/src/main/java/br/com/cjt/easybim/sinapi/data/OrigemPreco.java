@@ -2,9 +2,9 @@ package br.com.cjt.easybim.sinapi.data;
 
 public enum OrigemPreco {
 	
-	COEFICIENTE_REPRESENTATIVIDADE("Coeficiente de Representatividade"),
-	COLETADO("Coletado"),
-	ATRIBUIDO_SAO_PAULO("Atribu�do S�o Paulo");
+	CR("Coeficiente de Representatividade"),
+	C("Coletado"),
+	AS("Atribuído São Paulo");
 
     private String text;
 

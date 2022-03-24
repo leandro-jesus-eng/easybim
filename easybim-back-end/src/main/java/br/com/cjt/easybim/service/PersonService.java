@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.cjt.easybim.controller.ResourceNotFoundException;
+import br.com.cjt.easybim.controller.exception.ResourceNotFoundException;
 import br.com.cjt.easybim.data.Country;
 import br.com.cjt.easybim.data.Person;
 import br.com.cjt.easybim.repository.PersonRepository;
@@ -47,7 +47,7 @@ public class PersonService {
 	}
 	
 	public Person replace (Person newPerson, String id) {
-		if(id == null) new br.com.cjt.easybim.controller.IllegalArgumentException("ID parameter cannot be null");
+		if(id == null) new br.com.cjt.easybim.controller.exception.IllegalArgumentException("ID parameter cannot be null");
 		
 		return personRepository.findById(id).map(person -> {			
 			person.setFirstName(newPerson.getFirstName());

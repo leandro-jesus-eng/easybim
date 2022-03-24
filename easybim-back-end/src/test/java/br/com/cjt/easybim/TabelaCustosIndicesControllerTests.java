@@ -60,12 +60,13 @@ class TabelaCustosIndicesControllerTests implements CommandLineRunner {
         //MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "multipart/form-data",fi1);        
         MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "text/plain", fi1);
 
-        //MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile);
-        //mockMvc.perform(builder);		
-        
         mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
         	.andDo(MockMvcResultHandlers.print())
         	.andExpect(MockMvcResultMatchers.status().isOk());
+        
+        mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
+    		.andDo(MockMvcResultHandlers.print())
+    		.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 	
 	@Test

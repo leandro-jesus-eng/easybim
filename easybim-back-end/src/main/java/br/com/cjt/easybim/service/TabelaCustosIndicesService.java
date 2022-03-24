@@ -13,21 +13,25 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.cjt.easybim.controller.ResourceNotFoundException;
+import br.com.cjt.easybim.controller.exception.ResourceNotFoundException;
 import br.com.cjt.easybim.data.Person;
 import br.com.cjt.easybim.repository.TabelaCustosIndicesRepository;
 import br.com.cjt.easybim.sinapi.ConvertXlsToObj;
 import br.com.cjt.easybim.sinapi.data.Composicao;
+import br.com.cjt.easybim.sinapi.data.Insumo;
 import br.com.cjt.easybim.sinapi.data.ItemComposicao;
 import br.com.cjt.easybim.sinapi.data.NomeTabelas;
 import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 
 //TODO criar composições próprias baseadas no SINAPI. guardar de onde saiu, histórico
 //TODO criar insumos próprios baseadas no SINAPI. guardar de onde saiu, histórico
+
 //TODO Insumo, adicionar MACRO Classe - importante para fazer o histograma
 //TODO Insumo, coeficiente desconhecido q está na família de insumos serve para calcular o valor baseado em um item de agregação
-//TODO Orçamento precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
-//TODO Verificar onde estão os insumos e composições que estão sem custo ... verificar o arquivo excel catálogo de referenciais
+//TODO Insumo, verificar onde estão os insumos e composições que estão sem custo ... verificar o arquivo excel catálogo de referenciais
+
+//TODO Orçamento, precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
+
 //TODO testar @Transactional
 //TODO verificar se um @Service é criado para cada conexão
 
@@ -37,7 +41,7 @@ public class TabelaCustosIndicesService {
 
 	public static String COULD_NOT_FIND = "Could not find = ";
 
-	private Set<Object> savedObjects = null;
+	private Set<Object> savedComposicao = null;
 
 	@Autowired
 	private TabelaCustosIndicesRepository tabelaCustosIndicesRepository;
@@ -58,7 +62,7 @@ public class TabelaCustosIndicesService {
 	 */
 	public List<TabelaCustosIndices> find(String nameTable, String localidade, String dataPreco) {
 		if (nameTable == null || dataPreco == null || localidade == null)
-			new br.com.cjt.easybim.controller.IllegalArgumentException(
+			new br.com.cjt.easybim.controller.exception.IllegalArgumentException(
 					"Parameters: (nameTable, dataPreco, localidade) cannot be null");
 
 		return tabelaCustosIndicesRepository.find(nameTable, localidade, dataPreco)
@@ -100,7 +104,7 @@ public class TabelaCustosIndicesService {
 	 * @return
 	 */
 	public List<String> findLocalidades(String nameTable) {
-		
+
 		List<String> localidadesList = new ArrayList<String>();
 		mongoTemplate.getCollection("tabelaCustosIndices").distinct("localidade", String.class).iterator()
 				.forEachRemaining(localidadesList::add);
@@ -112,6 +116,7 @@ public class TabelaCustosIndicesService {
 	}
 
 	/**
+	 * Salva a tabela de custos e índices
 	 * 
 	 * @param tabelaCustosIndices
 	 * @return
@@ -121,62 +126,71 @@ public class TabelaCustosIndicesService {
 	}
 
 	/**
+	 * Salva recursivamente os dados da Tabela e de todos as composições e insumos 
 	 * 
 	 * @param inputStream
 	 * @return
 	 */
 	@Transactional
 	public TabelaCustosIndices save(InputStream inputStream) {
-		savedObjects = new HashSet<>();
+		savedComposicao = new HashSet<>();
 
-		// TODO, verificar se a tabela já foi importada
+		System.out.println("TabelaCustosIndices salvar iniciado ");
+		
 		TabelaCustosIndices tci = convertXlsToObj.parse(inputStream);
-		tci.getInsumos().forEach(e -> mongoTemplate.save(e));
+
+		System.out.println("TabelaCustosIndices verificando se existe");
+		if (find(tci.getNome(), tci.getLocalidade(), tci.getDataPreco()).size() > 0) {
+			System.out.println("TabelaCustosIndices já existe");
+			new br.com.cjt.easybim.controller.exception.ResourceAlreadyExistsException("Resource already exists");
+		}
+		
+		System.out.println("TabelaCustosIndices salvar insumos");
+		tci.getInsumos().forEach(e -> saveInsumo(e));
+		System.out.println("TabelaCustosIndices salvar composicoes");
 		tci.getComposicoes().forEach(e -> e = saveComposicao(e));
+		System.out.println("TabelaCustosIndices salva");
 		return save(tci);
 	}
 
+	public void delete(TabelaCustosIndices tabelaCustosIndices) {
+		tabelaCustosIndicesRepository.delete(tabelaCustosIndices);
+	}
+	
 	/**
+	 * Salva a composição
 	 * 
 	 * @param c
 	 * @return
 	 */
 	public Composicao saveComposicao(Composicao c) {
+		// TODO verificar se a classe de serviço é criada para cada conexão
+		// if (savedComposicao == null) savedComposicao = new HashSet<>();
+		
 		for (ItemComposicao ic : c.getItensComposicao()) {
-			if (ic.getComposicao() != null && !savedObjects.contains(ic.getComposicao())) {
+			if (ic.getComposicao() != null && !savedComposicao.contains(ic.getComposicao())) {
 				saveComposicao(ic.getComposicao());
 			}
 		}
-		savedObjects.add(c);
+		savedComposicao.add(c);
 		return mongoTemplate.save(c);
 	}
-
-	public void delete(TabelaCustosIndices tabelaCustosIndices) {
-		// tabelaCustosIndicesRepository.delete(tabelaCustosIndices);
+	
+	/**
+	 * Salva o insumo e seu objetivo representativo se houver
+	 * @param i
+	 * @return
+	 */
+	public Insumo saveInsumo(Insumo i) {		
+		if (i.getInsumoRepresentativo() != null && i.getInsumoRepresentativo().getId() == null) {
+			mongoTemplate.save(i.getInsumoRepresentativo());
+		}		
+		return mongoTemplate.save(i);
 	}
 
-	public Person findComposicaoByCodigo(String codigo) {
+	public Person findComposicaoByCodigo(TabelaCustosIndices tabelaCustosIndices, String codigo) {
 		// return tabelaCustosIndicesRepository.findByCodigo(codigo).orElseThrow( () ->
 		// new ResourceNotFoundException(COULD_NOT_FIND + codigo) );
 		return null;
 	}
-
-	public TabelaCustosIndices replace(TabelaCustosIndices newPerson, String id) {
-		if (id == null)
-			new br.com.cjt.easybim.controller.IllegalArgumentException("ID parameter cannot be null");
-
-		/*
-		 * return personRepository.findById(id).map(person -> {
-		 * person.setFirstName(newPerson.getFirstName());
-		 * person.setLastName(newPerson.getLastName());
-		 * person.setBirthday(newPerson.getBirthday());
-		 * person.setGender(newPerson.getGender());
-		 * person.setPersonAddresses(newPerson.getPersonAddresses());
-		 * person.setPersonImages(newPerson.getPersonImages()); return
-		 * personRepository.save(person); }).orElseGet(() -> { new
-		 * ResourceNotFoundException("Could not find person id = "+id); return null; });
-		 */
-		return null;
-	}
-
 }
