@@ -15,6 +15,7 @@ public class ConvertXlsToJson {
 	public static void main(String[] args) {
 		
 		int rowHeader = 5;
+		int teste = 10;
 
 		int descricaoClasse = 0;
 		int siglaClasse = 1;
