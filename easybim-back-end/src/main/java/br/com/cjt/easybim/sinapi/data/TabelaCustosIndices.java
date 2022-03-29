@@ -38,10 +38,10 @@ public class TabelaCustosIndices extends AbstractEntity {
 	private String dataPreco;
 		
 	@ToString.Exclude
-	@DBRef (lazy = false)
+	@DBRef (lazy = true)
 	private List<Composicao> composicoes = new ArrayList<Composicao>();
 	
 	@ToString.Exclude
-	@DBRef (lazy = false)
+	@DBRef (lazy = true)
 	private List<Insumo> insumos = new ArrayList<Insumo>();
 }

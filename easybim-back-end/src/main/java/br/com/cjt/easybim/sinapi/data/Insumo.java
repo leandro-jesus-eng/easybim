@@ -28,7 +28,9 @@ public class Insumo extends AbstractEntity {
 	@Field
 	private double precoMedianoInsumo;
 
-	@DBRef (lazy = false)
+	// lazy false trava o mongodb, pois busca o insumo representativo ao mesmo tempo causando vários loops. 
+	// Teoricamente, não era pra entrar em loop infinito, mas o consulta não retorna depois de vários minutos.
+	@DBRef (lazy = true)
 	private Insumo insumoRepresentativo;
 	@Field
 	private double coeficienteInsumoRepresentativo;

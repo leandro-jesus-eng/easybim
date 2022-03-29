@@ -29,8 +29,14 @@ public class ItemComposicao {
 	 */
 	@Field
 	private double custoTotalItem;
-	@DBRef (lazy = false)
+	
+	// lazy false trava o mongodb, Teoricamente, não era pra entrar em loop infinito, 
+	// mas o consulta não retorna depois de vários minutos.
+	@DBRef (lazy = true)
 	private Composicao composicao;
-	@DBRef (lazy = false)
+	
+	// lazy false trava o mongodb, Teoricamente, não era pra entrar em loop infinito, 
+	// mas o consulta não retorna depois de vários minutos.
+	@DBRef (lazy = true)
 	private Insumo insumo;
 }

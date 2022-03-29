@@ -33,7 +33,6 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 //TODO Orçamento, precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
 
 //TODO testar @Transactional
-//TODO verificar se um @Service é criado para cada conexão
 
 @Service
 @Transactional
@@ -62,12 +61,15 @@ public class TabelaCustosIndicesService {
 	 */
 	public List<TabelaCustosIndices> find(String nameTable, String localidade, String dataPreco) {
 		if (nameTable == null || dataPreco == null || localidade == null)
-			new br.com.cjt.easybim.controller.exception.IllegalArgumentException(
+			throw new br.com.cjt.easybim.controller.exception.IllegalArgumentException(
 					"Parameters: (nameTable, dataPreco, localidade) cannot be null");
 
-		return tabelaCustosIndicesRepository.find(nameTable, localidade, dataPreco)
-				.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "nameTable=" + nameTable
-						+ " localidade=" + localidade + " dataPreco=" + dataPreco));
+		// orElseThrow não está mudando o fluxo de execução do código
+		List<TabelaCustosIndices> ltci = tabelaCustosIndicesRepository.find(nameTable, localidade, dataPreco)
+		.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "nameTable=" + nameTable
+				+ " localidade=" + localidade + " dataPreco=" + dataPreco));
+		
+		return ltci;
 	}
 
 	/**
@@ -93,7 +95,7 @@ public class TabelaCustosIndicesService {
 				.forEachRemaining(dataPrecosList::add);
 
 		if (dataPrecosList.size() == 0)
-			new ResourceNotFoundException(COULD_NOT_FIND + nameTable);
+			throw new ResourceNotFoundException(COULD_NOT_FIND + nameTable);
 
 		return dataPrecosList;
 	}
@@ -110,7 +112,7 @@ public class TabelaCustosIndicesService {
 				.forEachRemaining(localidadesList::add);
 
 		if (localidadesList.size() == 0)
-			new ResourceNotFoundException(COULD_NOT_FIND + nameTable);
+			throw new ResourceNotFoundException(COULD_NOT_FIND + nameTable);
 
 		return localidadesList;
 	}
@@ -133,22 +135,28 @@ public class TabelaCustosIndicesService {
 	 */
 	@Transactional
 	public TabelaCustosIndices save(InputStream inputStream) {
-		savedComposicao = new HashSet<>();
-
+		
 		System.out.println("TabelaCustosIndices salvar iniciado ");
 		
 		TabelaCustosIndices tci = convertXlsToObj.parse(inputStream);
 
+		try { // TODO verificar
+			
+		
 		System.out.println("TabelaCustosIndices verificando se existe");
 		if (find(tci.getNome(), tci.getLocalidade(), tci.getDataPreco()).size() > 0) {
 			System.out.println("TabelaCustosIndices já existe");
-			new br.com.cjt.easybim.controller.exception.ResourceAlreadyExistsException("Resource already exists");
+			throw new br.com.cjt.easybim.controller.exception.ResourceAlreadyExistsException("Resource already exists");
+		}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		System.out.println("TabelaCustosIndices salvar insumos");
 		tci.getInsumos().forEach(e -> saveInsumo(e));
 		System.out.println("TabelaCustosIndices salvar composicoes");
-		tci.getComposicoes().forEach(e -> e = saveComposicao(e));
+		saveComposicoes(tci.getComposicoes());
 		System.out.println("TabelaCustosIndices salva");
 		return save(tci);
 	}
@@ -158,18 +166,29 @@ public class TabelaCustosIndicesService {
 	}
 	
 	/**
-	 * Salva a composição
+	 * salva uma composição e todos os itens que a compõe
+	 * método sincronizado para garantir que as composições sejam salvas apenas uma única vez,
+	 * pois elas possuem relacionamentos e podem fazer parte de muitas outras composições.
 	 * 
 	 * @param c
 	 * @return
 	 */
-	public Composicao saveComposicao(Composicao c) {
-		// TODO verificar se a classe de serviço é criada para cada conexão
-		// if (savedComposicao == null) savedComposicao = new HashSet<>();
+	public synchronized void saveComposicoes(List<Composicao> lc) {
+		savedComposicao = new HashSet<>();
+		lc.forEach(e -> e = saveComposicaoRecursive(e));
+	}
+	
+	/**
+	 * Salva a composição recursivamente
+	 * 
+	 * @param c
+	 * @return
+	 */
+	private Composicao saveComposicaoRecursive(Composicao c) {
 		
 		for (ItemComposicao ic : c.getItensComposicao()) {
 			if (ic.getComposicao() != null && !savedComposicao.contains(ic.getComposicao())) {
-				saveComposicao(ic.getComposicao());
+				saveComposicaoRecursive(ic.getComposicao());
 			}
 		}
 		savedComposicao.add(c);
@@ -177,7 +196,7 @@ public class TabelaCustosIndicesService {
 	}
 	
 	/**
-	 * Salva o insumo e seu objetivo representativo se houver
+	 * Salva o insumo e seu objetivo representativo(quando o representativo tem id null) se houver
 	 * @param i
 	 * @return
 	 */
