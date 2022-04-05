@@ -1,35 +1,21 @@
 package br.com.cjt.easybim;
 
-import java.io.File;
-import java.io.FileInputStream;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.cjt.easybim.service.PersonService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TabelaCustosIndicesControllerTests implements CommandLineRunner {
+class TabelaCustosIndicesControllerTests {
 
 	@Autowired
 	MongoTemplate mongoTemplate;	 
 		
-	@Autowired
-	PersonService personService;
-	
 	@Autowired
 	MockMvc mockMvc;
 	
@@ -48,25 +34,6 @@ class TabelaCustosIndicesControllerTests implements CommandLineRunner {
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.[*].personAddresses[*]").isNotEmpty());
 		
 		destroyData();*/
-	}
-	
-	@Test
-	void whenSave() throws Exception {
-		
-		ClassPathResource res = new ClassPathResource("test/SINAPI_Desonerado.xls");
-		File file = res.getFile();
-		FileInputStream fi1 = new FileInputStream(file);
-		
-        //MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "multipart/form-data",fi1);        
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "text/plain", fi1);
-
-        mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
-        	.andDo(MockMvcResultHandlers.print())
-        	.andExpect(MockMvcResultMatchers.status().isOk());
-        
-        mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
-    		.andDo(MockMvcResultHandlers.print())
-    		.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 	
 	@Test
@@ -239,75 +206,11 @@ class TabelaCustosIndicesControllerTests implements CommandLineRunner {
 		destroyData();*/
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		destroyData();
-	}	
-		
+	@BeforeAll
 	private void createData() {
-		
-		/*Person person;
-		Calendar c = Calendar.getInstance();
-		
-		Country countryUSA;
-		Country countryBR;
-		
-		countryUSA = new Country(null, "USA");
-		mongoTemplate.save(countryUSA);
-		
-		countryBR = new Country(null, "Brasil");
-		mongoTemplate.save(countryBR);
-		
-		person = new Person();
-		person.setFirstName("Leandro");
-		person.setLastName("Jesus");
-		c.set(1982, Calendar.JULY, 4);
-		person.setBirthday(c.getTime());
-		person.setGender(Gender.MALE);
-		Set<PersonAddress> pa = new HashSet<PersonAddress>();
-		pa.add( new PersonAddress("707 Rosevelt ST", "Miami", "FLS", "30301", countryUSA) );
-		person.setPersonAddresses( pa );				
-		
-		personService.save(person);
-		
-		person = new Person();
-		person.setFirstName("Felipe");
-		person.setLastName("Jesus");
-		c.set(2014, Calendar.SEPTEMBER, 8);
-		person.setBirthday(c.getTime());
-		person.setGender(Gender.MALE);
-		pa = new HashSet<PersonAddress>();
-		pa.add( new PersonAddress("Francisco Dias Feitosa 905", "Aquidauana", "MS", "79200-000", countryBR) );
-		person.setPersonAddresses( pa );				
-		
-		personService.save(person);
-		
-		
-		person = new Person();
-		person.setFirstName("Marcia");
-		person.setLastName("Cristaldo");
-		c.set(1983, Calendar.JANUARY, 11);
-		person.setBirthday(c.getTime());
-		person.setGender(Gender.FEMALE);
-		pa = new HashSet<PersonAddress>();
-		pa.add( new PersonAddress("Francisco Dias Feitosa 905", "Aquidauana", "MS", "79200-000", countryBR) );
-		person.setPersonAddresses( pa );				
-		
-		personService.save(person);*/
 	}
 	
-	private void destroyData() {
-		/*
-		personService.findAll().forEach( e -> personService.delete(e) );
-		personService.findAllCountries().forEach( ct -> mongoTemplate.remove(ct) );
-		*/
-	}
-	
-	public static String asJsonString(final Object obj) {
-	    try {
-	        return new ObjectMapper().writeValueAsString(obj);
-	    } catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
+	@AfterAll
+	private void destroyData() {		
 	}
 }

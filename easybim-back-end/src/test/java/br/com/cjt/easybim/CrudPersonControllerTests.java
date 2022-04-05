@@ -7,7 +7,14 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +37,8 @@ import br.com.cjt.easybim.service.PersonService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(OrderAnnotation.class)
+@TestInstance(value = Lifecycle.PER_METHOD)
 class CrudPersonControllerTests implements CommandLineRunner {
 
 	@Autowired
@@ -42,6 +51,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	MockMvc mockMvc;
 	
 	@Test
+	@Order(1)
 	void whenFindAll() throws Exception {
 		createData();
 		
@@ -59,6 +69,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	}
 	
 	@Test
+	@Order(2)
 	void whenSave() throws Exception {
 				
 		Person person;
@@ -94,6 +105,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	}
 	
 	@Test
+	@Order(3)
 	void whenFindById() throws Exception {
 		createData();
 		
@@ -135,6 +147,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	}
 	
 	@Test
+	@Order(4)
 	void whenReplace() throws Exception {
 		createData();
 		
@@ -191,6 +204,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	
 	
 	@Test
+	@Order(5)
 	void whenDelete() throws Exception {
 		createData();
 		
@@ -239,6 +253,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 	}
 	
 	@Test
+	@Order(6)
 	void whenFindByFirstName() throws Exception {
 		createData();
 		
@@ -265,9 +280,10 @@ class CrudPersonControllerTests implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		destroyData();
+		//destroyData();
 	}	
 		
+	@BeforeAll
 	private void createData() {
 		
 		Person person;
@@ -320,6 +336,7 @@ class CrudPersonControllerTests implements CommandLineRunner {
 		personService.save(person);
 	}
 	
+	@AfterAll
 	private void destroyData() {
 		
 		personService.findAll().forEach( e -> personService.delete(e) );

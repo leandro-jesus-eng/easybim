@@ -12,6 +12,9 @@ import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { TieredMenu } from 'primereact/tieredmenu';
+
+import { MenuOptions } from '../components/MenuOptions';
 import { ComposicoesService } from '../service/ComposicoesService';
 
 const Composicoes = () => {
@@ -181,11 +184,38 @@ const Composicoes = () => {
 
     const rightToolbarTemplate = () => {
         return (
-            <React.Fragment>
-                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
+            <React.Fragment>   
+                <FileUpload mode="basic" accept=".xls" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
             </React.Fragment>
         )
+    }
+
+    const tabelaBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Tabela</span>
+                SINAPI
+            </>
+        );
+    }
+
+    const localidadeBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Tabela</span>
+                Campo Grande
+            </>
+        );
+    }
+
+    const dataPrecoBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Tabela</span>
+                dezembro/2021
+            </>
+        );
     }
 
     const codeBodyTemplate = (rowData) => {
@@ -309,25 +339,26 @@ const Composicoes = () => {
 
     const actionBodyTemplate = (rowData) => {
         return (
-
-
-            <div className="actions">
-                <Button icon="pi pi-pencil" className="p-button-success mr-2" onClick={() => editProduct(rowData)} /> 
-                <Button icon="pi pi-trash" className="p-button-warning mt-1" onClick={() => confirmDeleteProduct(rowData)} />                
-            </div>
+            <>
+                <MenuOptions></MenuOptions>
+            </>
         );
     }
 
     const header = (
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Gerenciar Composições</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left">
+        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">            
+            <Button type="button" icon="pi pi-filter-slash" label="Clear" className="p-button-outlined" onClick={clearFilter} />
+            <span className="block mt-2 md:mt-0 p-input-icon-left">                
                 <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />                
             </span>
         </div>
     );
 
+    const clearFilter = () => {
+         //setGlobalFilter("olá"); 
+    }
+    
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
@@ -351,23 +382,29 @@ const Composicoes = () => {
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
-                    <Toast ref={toast} />
+                    <h5>Gerenciar Composições</h5>
+                    <Toast ref={toast} />                    
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                    <DataTable ref={dt} value={composicoes} selection={selectedRows} onSelectionChange={(e) => setSelectedRows(e.value)}
-                        dataKey="codigoComposicao" paginator rows={5} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
+                    <DataTable ref={dt}  size="small" showGridlines responsiveLayout="scroll"
+                        value={composicoes} selection={selectedRows} onSelectionChange={(e) => setSelectedRows(e.value)}
+                        dataKey="codigoComposicao" paginator rows={10} rowsPerPageOptions={[10, 15, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                        globalFilter={globalFilter} emptyMessage="No products found." header={header} responsiveLayout="scroll">
-                        <Column selectionMode="multiple" headerStyle={{ width: '3rem'}}></Column>
-                        <Column field="codigoComposicao" header="cod" sortable body={codeBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
+                        globalFilter={globalFilter} emptyMessage="No registers found." header={header} >                                                       
+                        <Column body={actionBodyTemplate}></Column>
+                        <Column selectionMode="multiple" headerStyle={{ width: '3rem'}} hidden="true"></Column>                        
+                        <Column field="tabela" header="Tabela" sortable body={tabelaBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
+                        <Column field="localidade" header="Local" sortable body={localidadeBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
+                        <Column field="dataPreco" header="Base" sortable body={dataPrecoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                        
+                        <Column field="codigoComposicao" header="id" sortable body={codeBodyTemplate} headerStyle={{ width: '5%', minWidth: '2rem' }}></Column>
                         <Column field="descricaoComposicao" header="Descrição" sortable body={descricaoBodyTemplate} headerStyle={{ width: '90%', minWidth: '20rem' }}></Column>
                         <Column field="unidade" header="Med" sortable body={medidaBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                                                
                         <Column field="custoMaoObra" header="Mão Obra" sortable body={custoMaoObraBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                         <Column field="custoMaterial" header="Material" sortable body={custoMaterialBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
-                        <Column field="custoEquipamento" header="Equipamento" sortable body={custoEquipamentoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>    
+                        <Column field="custoEquipamento" header="Equipa mento" sortable body={custoEquipamentoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>    
                         <Column field="custoTotal" header="Total" body={custoTotalBodyTemplate} sortable headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                    
-                        <Column body={actionBodyTemplate}></Column>
+                        
                     </DataTable>
 
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>

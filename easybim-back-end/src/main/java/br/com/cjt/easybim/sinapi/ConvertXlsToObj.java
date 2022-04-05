@@ -140,6 +140,7 @@ public class ConvertXlsToObj {
 			tabelaCustosIndices.getInsumos().add(insumo);
 			insumoMap.put(insumo.getCodigoInsumo(), insumo);
 		}
+		System.out.println("insumoMap size = "+insumoMap.size());
 		
 		
 		// ler de outra planilha - familia de insumos

@@ -33,6 +33,7 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 //TODO Orçamento, precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
 
 //TODO testar @Transactional
+//TODO Service, evitar o uso de objetos da classe para não haver problemas de alteração de estado de objetos por requisições concorrentes 
 
 @Service
 @Transactional
@@ -47,9 +48,6 @@ public class TabelaCustosIndicesService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
-
-	@Autowired
-	private ConvertXlsToObj convertXlsToObj;
 
 	/**
 	 * Retorna a tabela de custos e indices, incluindo suas composições e insumos
@@ -66,9 +64,9 @@ public class TabelaCustosIndicesService {
 
 		// orElseThrow não está mudando o fluxo de execução do código
 		List<TabelaCustosIndices> ltci = tabelaCustosIndicesRepository.find(nameTable, localidade, dataPreco)
-		.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "nameTable=" + nameTable
-				+ " localidade=" + localidade + " dataPreco=" + dataPreco));
-		
+				.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "nameTable=" + nameTable
+						+ " localidade=" + localidade + " dataPreco=" + dataPreco));
+
 		return ltci;
 	}
 
@@ -128,47 +126,47 @@ public class TabelaCustosIndicesService {
 	}
 
 	/**
-	 * Salva recursivamente os dados da Tabela e de todos as composições e insumos 
+	 * Salva recursivamente os dados da Tabela e de todos as composições e insumos
 	 * 
 	 * @param inputStream
 	 * @return
 	 */
-	@Transactional
 	public TabelaCustosIndices save(InputStream inputStream) {
-		
+
 		System.out.println("TabelaCustosIndices salvar iniciado ");
 		
+		TabelaCustosIndices objectReturn = null;
+
+		ConvertXlsToObj convertXlsToObj = new ConvertXlsToObj();
 		TabelaCustosIndices tci = convertXlsToObj.parse(inputStream);
 
-		try { // TODO verificar
+		synchronized (this) {
+			System.out.println("TabelaCustosIndices verificando se existe");
+			if (find(tci.getNome(), tci.getLocalidade(), tci.getDataPreco()).size() > 0) {
+				System.out.println("TabelaCustosIndices já existe");
+				throw new br.com.cjt.easybim.controller.exception.ResourceAlreadyExistsException(
+						"Resource already exists");
+			}
+
+			System.out.println("TabelaCustosIndices salvar insumos");
+			tci.getInsumos().forEach(e -> saveInsumo(e));
+			System.out.println("TabelaCustosIndices salvar composicoes");
+			saveComposicoes(tci.getComposicoes());
+			System.out.println("TabelaCustosIndices salva");
 			
-		
-		System.out.println("TabelaCustosIndices verificando se existe");
-		if (find(tci.getNome(), tci.getLocalidade(), tci.getDataPreco()).size() > 0) {
-			System.out.println("TabelaCustosIndices já existe");
-			throw new br.com.cjt.easybim.controller.exception.ResourceAlreadyExistsException("Resource already exists");
+			objectReturn = save(tci);			
 		}
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("TabelaCustosIndices salvar insumos");
-		tci.getInsumos().forEach(e -> saveInsumo(e));
-		System.out.println("TabelaCustosIndices salvar composicoes");
-		saveComposicoes(tci.getComposicoes());
-		System.out.println("TabelaCustosIndices salva");
-		return save(tci);
+		return objectReturn;
 	}
 
 	public void delete(TabelaCustosIndices tabelaCustosIndices) {
 		tabelaCustosIndicesRepository.delete(tabelaCustosIndices);
 	}
-	
+
 	/**
-	 * salva uma composição e todos os itens que a compõe
-	 * método sincronizado para garantir que as composições sejam salvas apenas uma única vez,
-	 * pois elas possuem relacionamentos e podem fazer parte de muitas outras composições.
+	 * salva uma composição e todos os itens que a compõe método sincronizado para
+	 * garantir que as composições sejam salvas apenas uma única vez, pois elas
+	 * possuem relacionamentos e podem fazer parte de muitas outras composições.
 	 * 
 	 * @param c
 	 * @return
@@ -177,7 +175,7 @@ public class TabelaCustosIndicesService {
 		savedComposicao = new HashSet<>();
 		lc.forEach(e -> e = saveComposicaoRecursive(e));
 	}
-	
+
 	/**
 	 * Salva a composição recursivamente
 	 * 
@@ -185,7 +183,7 @@ public class TabelaCustosIndicesService {
 	 * @return
 	 */
 	private Composicao saveComposicaoRecursive(Composicao c) {
-		
+
 		for (ItemComposicao ic : c.getItensComposicao()) {
 			if (ic.getComposicao() != null && !savedComposicao.contains(ic.getComposicao())) {
 				saveComposicaoRecursive(ic.getComposicao());
@@ -194,16 +192,18 @@ public class TabelaCustosIndicesService {
 		savedComposicao.add(c);
 		return mongoTemplate.save(c);
 	}
-	
+
 	/**
-	 * Salva o insumo e seu objetivo representativo(quando o representativo tem id null) se houver
+	 * Salva o insumo e seu objetivo representativo(quando o representativo tem id
+	 * null) se houver
+	 * 
 	 * @param i
 	 * @return
 	 */
-	public Insumo saveInsumo(Insumo i) {		
+	public Insumo saveInsumo(Insumo i) {
 		if (i.getInsumoRepresentativo() != null && i.getInsumoRepresentativo().getId() == null) {
 			mongoTemplate.save(i.getInsumoRepresentativo());
-		}		
+		}
 		return mongoTemplate.save(i);
 	}
 

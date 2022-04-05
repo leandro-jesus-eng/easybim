@@ -7,8 +7,7 @@ export const AppTopbar = (props) => {
     return (
         <div className="layout-topbar">
             <Link to="/" className="layout-topbar-logo">
-                {/* <img src={props.layoutColorMode === 'light' ? 'assets/layout/images/logo-dark.svg' : 'assets/layout/images/logo-white.svg'} alt="logo"/> */}
-                <img src='assets/layout/images/logo-schettini.png' alt="logo"/>
+                { <img src={props.layoutColorMode === 'light' ? 'assets/layout/images/logo_bim4us_black.png' : 'assets/layout/images/logo_bim4us_white.png'} alt="logo"/> }                
                 <span></span>
             </Link>
 
