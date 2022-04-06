@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import { Dropdown } from 'primereact/dropdown';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
@@ -12,7 +13,6 @@ import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { TieredMenu } from 'primereact/tieredmenu';
 
 import { MenuOptions } from '../components/MenuOptions';
 import { ComposicoesService } from '../service/ComposicoesService';
@@ -40,10 +40,18 @@ const Composicoes = () => {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const [selectedNomeTabela, setSelectedNomeTabela] = useState(null);
+
+    const [nomeTabelas, setNomeTabelas] = useState(null);
+
+    const onNomeTabelaChange = (e) => {
+        setSelectedNomeTabela(e.value);
+    }
 
     useEffect(() => {
         const composicoesService = new ComposicoesService();
-        composicoesService.getComposicoes().then(data => setComposicoes(data));
+        composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));
+        composicoesService.getComposicoes().then(data => setComposicoes(data));        
     }, []);
 
     const formatCurrency = (value) => {
@@ -175,7 +183,7 @@ const Composicoes = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
+                    <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} disabled='true' />
                     <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRows || !selectedRows.length} />
                 </div>
             </React.Fragment>
@@ -347,7 +355,8 @@ const Composicoes = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">            
-            <Button type="button" icon="pi pi-filter-slash" label="Clear" className="p-button-outlined" onClick={clearFilter} />
+            <Dropdown value={selectedNomeTabela} options={nomeTabelas} onChange={onNomeTabelaChange} optionLabel="name" placeholder="Selecione uma tabela" />
+
             <span className="block mt-2 md:mt-0 p-input-icon-left">                
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />                
@@ -386,14 +395,16 @@ const Composicoes = () => {
                     <Toast ref={toast} />                    
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                    <DataTable ref={dt}  size="small" showGridlines responsiveLayout="scroll"
+                    <DataTable ref={dt}  size="small" responsiveLayout="scroll" className="datatable-responsive"
                         value={composicoes} selection={selectedRows} onSelectionChange={(e) => setSelectedRows(e.value)}
-                        dataKey="codigoComposicao" paginator rows={10} rowsPerPageOptions={[10, 15, 25]} className="datatable-responsive"
+                        dataKey="codigoComposicao" 
+                        paginator rows={10} rowsPerPageOptions={[10, 15, 25]} 
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                        globalFilter={globalFilter} emptyMessage="No registers found." header={header} >                                                       
+                        globalFilter={globalFilter} globalFilterFields={['tabela', 'localidade', 'descricaoComposicao']} emptyMessage="No registers found." header={header} >                                                       
+                        <Column rowReorder></Column>
                         <Column body={actionBodyTemplate}></Column>
-                        <Column selectionMode="multiple" headerStyle={{ width: '3rem'}} hidden="true"></Column>                        
+                        <Column selectionMode="multiple" headerStyle={{ width: '3rem'}} hidden='true'></Column>                        
                         <Column field="tabela" header="Tabela" sortable body={tabelaBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                         <Column field="localidade" header="Local" sortable body={localidadeBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                         <Column field="dataPreco" header="Base" sortable body={dataPrecoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                        
@@ -403,8 +414,7 @@ const Composicoes = () => {
                         <Column field="custoMaoObra" header="Mão Obra" sortable body={custoMaoObraBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                         <Column field="custoMaterial" header="Material" sortable body={custoMaterialBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                         <Column field="custoEquipamento" header="Equipa mento" sortable body={custoEquipamentoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>    
-                        <Column field="custoTotal" header="Total" body={custoTotalBodyTemplate} sortable headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                    
-                        
+                        <Column field="custoTotal" header="Total" body={custoTotalBodyTemplate} sortable headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                     </DataTable>
 
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>

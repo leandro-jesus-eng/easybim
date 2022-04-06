@@ -176,7 +176,8 @@ public class ConvertXlsToObj {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		tabelaCustosIndices.setNome(NomeTabelas.SICRO.getText());
+		//tabelaCustosIndices.setNome(NomeTabelas.SICRO.getText());
+		tabelaCustosIndices.setNome(NomeTabelas.SINAPI);
 	}
 
 	private void parseComposicoes() {

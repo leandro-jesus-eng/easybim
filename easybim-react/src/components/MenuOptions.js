@@ -142,7 +142,7 @@ export class MenuOptions extends Component {
         return (
             <div>                
                 <TieredMenu model={this.items} popup ref={el => this.menu = el} id="overlay_tmenu" />
-                <Button className= "p-button-outlined p-button-text p-button-icon-only" label="" icon="pi pi-bars" onClick={(event) => this.menu.toggle(event)} aria-haspopup aria-controls="overlay_tmenu"/>                
+                <Button className= "p-button-outlined p-button-text p-button-icon-only" label="" icon="pi pi-book" onClick={(event) => this.menu.toggle(event)} aria-haspopup aria-controls="overlay_tmenu"/>                
             </div>
         );
     }

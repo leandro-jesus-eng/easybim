@@ -74,8 +74,9 @@ public class TabelaCustosIndicesService {
 	 * 
 	 * @return
 	 */
-	public List<String> findNomeTabelas() {
-		return Stream.of(NomeTabelas.values()).map(NomeTabelas::name).collect(Collectors.toList());
+	public List<NomeTabelas> findNomeTabelas() {
+		//return Stream.of(NomeTabelas.values()).map(NomeTabelas::name).collect(Collectors.toList());
+		return NomeTabelas.values();
 	}
 
 	/**

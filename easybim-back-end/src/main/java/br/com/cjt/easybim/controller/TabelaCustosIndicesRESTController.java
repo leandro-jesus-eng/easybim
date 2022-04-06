@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.cjt.easybim.service.TabelaCustosIndicesService;
+import br.com.cjt.easybim.sinapi.data.NomeTabelas;
 import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -50,7 +51,8 @@ public class TabelaCustosIndicesRESTController {
 	
 	@Operation (summary = "Return name of tables" )
 	@GetMapping("/REST/tabelacustosindices/nomeTabelas")
-	public List<String> findNomeTabelas() {
+	public List<NomeTabelas> findNomeTabelas() {
+		System.out.println("Buscou as tabelas");
 		return tabelaCustosIndicesService.findNomeTabelas();
 	}
 	
