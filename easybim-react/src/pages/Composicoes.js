@@ -40,17 +40,22 @@ const Composicoes = () => {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    
     const [selectedNomeTabela, setSelectedNomeTabela] = useState(null);
-
     const [nomeTabelas, setNomeTabelas] = useState(null);
-
     const onNomeTabelaChange = (e) => {
         setSelectedNomeTabela(e.value);
     }
 
+    const [selectedLocalidade, setSelectedLocalidade] = useState(null);
+    const [localidades, setLocalidades] = useState(null);
+    const onLocalidadeChange = (e) => {
+        setSelectedLocalidade(e.value);
+    }
+
     useEffect(() => {
         const composicoesService = new ComposicoesService();
-        composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));
+        composicoesService.getNomeTabelas(setNomeTabelas);
         composicoesService.getComposicoes().then(data => setComposicoes(data));        
     }, []);
 
@@ -183,7 +188,7 @@ const Composicoes = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} disabled='true' />
+                    <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} disabled={true} />
                     <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRows || !selectedRows.length} />
                 </div>
             </React.Fragment>
@@ -356,6 +361,7 @@ const Composicoes = () => {
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">            
             <Dropdown value={selectedNomeTabela} options={nomeTabelas} onChange={onNomeTabelaChange} optionLabel="name" placeholder="Selecione uma tabela" />
+            <Dropdown value={selectedLocalidade} options={localidades} onChange={onLocalidadeChange} optionLabel="name" placeholder="Selecione uma tabela" />
 
             <span className="block mt-2 md:mt-0 p-input-icon-left">                
                 <i className="pi pi-search" />

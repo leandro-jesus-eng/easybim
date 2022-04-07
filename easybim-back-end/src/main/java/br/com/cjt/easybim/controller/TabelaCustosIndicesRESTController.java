@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TabelaCustosIndicesRESTController {
 
 	@Autowired
@@ -50,7 +52,7 @@ public class TabelaCustosIndicesRESTController {
 	}
 	
 	@Operation (summary = "Return name of tables" )
-	@GetMapping("/REST/tabelacustosindices/nomeTabelas")
+	@GetMapping("/REST/tabelacustosindices/nomeTabelas")	
 	public List<NomeTabelas> findNomeTabelas() {
 		System.out.println("Buscou as tabelas");
 		return tabelaCustosIndicesService.findNomeTabelas();
@@ -58,7 +60,7 @@ public class TabelaCustosIndicesRESTController {
 	
 	@Operation (summary = "Return localidades of tables" )
 	@GetMapping("/REST/tabelacustosindices/localidades/{nameTable}")
-	public List<String> findLocalidades(String nameTable) {
+	public List<String> findLocalidades(@PathVariable String nameTable) {
 		return tabelaCustosIndicesService.findLocalidades(nameTable);
 	}
 	
