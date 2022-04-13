@@ -4,6 +4,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Data
@@ -33,10 +35,12 @@ public class ItemComposicao {
 	// lazy false trava o mongodb, Teoricamente, não era pra entrar em loop infinito, 
 	// mas o consulta não retorna depois de vários minutos.
 	@DBRef (lazy = true)
+	@JsonBackReference
 	private Composicao composicao;
 	
 	// lazy false trava o mongodb, Teoricamente, não era pra entrar em loop infinito, 
 	// mas o consulta não retorna depois de vários minutos.
 	@DBRef (lazy = true)
+	@JsonBackReference
 	private Insumo insumo;
 }

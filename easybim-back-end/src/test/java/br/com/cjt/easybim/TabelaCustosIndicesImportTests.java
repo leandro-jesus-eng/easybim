@@ -1,5 +1,7 @@
 package br.com.cjt.easybim;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -89,6 +91,7 @@ class TabelaCustosIndicesImportTests {
 
 	@BeforeAll
 	private void createData() {
+		//fail("Not yet implemented");
 	}
 	
 	@AfterAll

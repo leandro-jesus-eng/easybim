@@ -6,13 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mongodb.client.model.Filters;
+
 import br.com.cjt.easybim.controller.exception.ResourceNotFoundException;
-import br.com.cjt.easybim.data.Person;
+import br.com.cjt.easybim.repository.ComposicaoRepository;
 import br.com.cjt.easybim.repository.TabelaCustosIndicesRepository;
 import br.com.cjt.easybim.sinapi.ConvertXlsToObj;
 import br.com.cjt.easybim.sinapi.data.Composicao;
@@ -45,6 +48,9 @@ public class TabelaCustosIndicesService {
 	private TabelaCustosIndicesRepository tabelaCustosIndicesRepository;
 
 	@Autowired
+	private ComposicaoRepository composicaoRepository;
+
+	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	/**
@@ -73,7 +79,6 @@ public class TabelaCustosIndicesService {
 	 * @return
 	 */
 	public List<NomeTabelas> findNomeTabelas() {
-		//return Stream.of(NomeTabelas.values()).map(NomeTabelas::name).collect(Collectors.toList());
 		return NomeTabelas.values();
 	}
 
@@ -88,7 +93,8 @@ public class TabelaCustosIndicesService {
 	public List<String> findDataPrecos(String nameTable) {
 
 		List<String> dataPrecosList = new ArrayList<String>();
-		mongoTemplate.getCollection("tabelaCustosIndices").distinct("dataPreco", String.class).iterator()
+		Bson filter = Filters.eq("nome", nameTable);
+		mongoTemplate.getCollection("tabelaCustosIndices").distinct("dataPreco", filter, String.class).iterator()
 				.forEachRemaining(dataPrecosList::add);
 
 		if (dataPrecosList.size() == 0)
@@ -105,13 +111,52 @@ public class TabelaCustosIndicesService {
 	public List<String> findLocalidades(String nameTable) {
 
 		List<String> localidadesList = new ArrayList<String>();
-		mongoTemplate.getCollection("tabelaCustosIndices").distinct("localidade", String.class).iterator()
+
+		/*
+		 * List<TabelaCustosIndices> tcis = new ArrayList<TabelaCustosIndices>();
+		 * BasicQuery query = new BasicQuery("nome:"+nameTable);
+		 * mongoTemplate.findDistinct(query, "localidade", "tabelaCustosIndices",
+		 * TabelaCustosIndices.class) .iterator() .forEachRemaining(tcis::add);
+		 */
+		// tcis.iterator().forEachRemaining(x ->
+		// localidadesList.add(x.getLocalidade()));
+		// localidadesList = tcis.stream().map(x ->
+		// x.getNome()).collect(Collectors.toList());
+
+		// código para o mongo =
+		// db.getCollection('tabelaCustosIndices').distinct('localidade',
+		// {nome:"SINAPI"})
+		Bson filter = Filters.eq("nome", nameTable);
+		mongoTemplate.getCollection("tabelaCustosIndices").distinct("localidade", filter, String.class).iterator()
 				.forEachRemaining(localidadesList::add);
 
 		if (localidadesList.size() == 0)
 			throw new ResourceNotFoundException(COULD_NOT_FIND + nameTable);
 
 		return localidadesList;
+	}
+
+	public List<Composicao> findComposicoes(String nameTable, String localidade, String dataPreco) {
+		List<TabelaCustosIndices> ltci = find(nameTable, localidade, dataPreco);
+
+		if (ltci == null || ltci.size() == 0)
+			throw new ResourceNotFoundException(COULD_NOT_FIND + "nameTable=" + nameTable + " localidade=" + localidade
+					+ " dataPreco=" + dataPreco);
+		
+		return composicaoRepository
+				.find(ltci.get(0).getId())
+				.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "Composicao - tabelaCustosIndicesId=" + ltci.get(0).getId() )); 		
+
+		/*BasicQuery query = new BasicQuery("tabelaCustosIndicesId : '"+ltci.get(0).getId()+"'");		
+		return StreamSupport
+				.stream(mongoTemplate.find(query, Composicao.class, "composicao").spliterator(), false)
+				.collect(Collectors.toList());*/		
+		
+		/*Bson filter = Filters.eq("tabelaCustosIndicesId", ltci.get(0).getId());
+		Bson projection = Projections.fields(Projections.include("composicao") );				
+		return StreamSupport
+				.stream(mongoTemplate.getCollection("composicao").find(filter,  Composicao.class).projection(projection).spliterator(), false)
+				.collect(Collectors.toList());*/
 	}
 
 	/**
@@ -133,8 +178,8 @@ public class TabelaCustosIndicesService {
 	public TabelaCustosIndices save(InputStream inputStream) {
 
 		System.out.println("TabelaCustosIndices salvar iniciado ");
-		
-		TabelaCustosIndices objectReturn = null;
+
+		TabelaCustosIndices tciSaved = null;
 
 		ConvertXlsToObj convertXlsToObj = new ConvertXlsToObj();
 		TabelaCustosIndices tci = convertXlsToObj.parse(inputStream);
@@ -147,15 +192,26 @@ public class TabelaCustosIndicesService {
 						"Resource already exists");
 			}
 
+			List<Insumo> li = tci.getInsumos();
+			List<Composicao> lc = tci.getComposicoes();
+			tci.setInsumos(null);
+			tci.setComposicoes(null);
+
+			save(tci);
+			tci.setInsumos(li);
+			tci.setComposicoes(lc);
+
 			System.out.println("TabelaCustosIndices salvar insumos");
+			tci.getInsumos().forEach(e -> e.setTabelaCustosIndicesId(tci.getId()));
 			tci.getInsumos().forEach(e -> saveInsumo(e));
 			System.out.println("TabelaCustosIndices salvar composicoes");
+			tci.getComposicoes().forEach(e -> e.setTabelaCustosIndicesId(tci.getId()));
 			saveComposicoes(tci.getComposicoes());
 			System.out.println("TabelaCustosIndices salva");
-			
-			objectReturn = save(tci);			
+
+			tciSaved = save(tci);
 		}
-		return objectReturn;
+		return tciSaved;
 	}
 
 	public void delete(TabelaCustosIndices tabelaCustosIndices) {
@@ -189,7 +245,7 @@ public class TabelaCustosIndicesService {
 			}
 		}
 		savedComposicao.add(c);
-		return mongoTemplate.save(c);
+		return composicaoRepository.save(c);
 	}
 
 	/**
@@ -204,11 +260,5 @@ public class TabelaCustosIndicesService {
 			mongoTemplate.save(i.getInsumoRepresentativo());
 		}
 		return mongoTemplate.save(i);
-	}
-
-	public Person findComposicaoByCodigo(TabelaCustosIndices tabelaCustosIndices, String codigo) {
-		// return tabelaCustosIndicesRepository.findByCodigo(codigo).orElseThrow( () ->
-		// new ResourceNotFoundException(COULD_NOT_FIND + codigo) );
-		return null;
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.cjt.easybim.service.TabelaCustosIndicesService;
+import br.com.cjt.easybim.sinapi.data.Composicao;
 import br.com.cjt.easybim.sinapi.data.NomeTabelas;
 import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,15 +35,20 @@ public class TabelaCustosIndicesRESTController {
 		try {
 			tabelaCustosIndicesService.save(file.getInputStream());
 		} catch (IOException e) {
-			// TODO Generate Internal Server error
 			e.printStackTrace();
-		}		
+		}
 	}
 	
 	@Operation (summary = "Return tables" )
 	@GetMapping("/REST/tabelacustosindices")
-	public List<TabelaCustosIndices> find(@RequestParam  String nameTable, @RequestParam String localidade, @RequestParam String dataPreco) {		
+	public List<TabelaCustosIndices> find(String nameTable, String localidade, String dataPreco) {		
 		return tabelaCustosIndicesService.find(nameTable, localidade, dataPreco); 
+	}
+	
+	@Operation (summary = "Return composicao" )
+	@GetMapping("/REST/tabelacustosindices/composicoes")
+	public List<Composicao> findComposicao(String nameTable, String localidade, String dataPreco) {
+		return tabelaCustosIndicesService.findComposicoes(nameTable, localidade, dataPreco); 
 	}
 	
 	@Operation (summary = "Return dataPreco of table" )
@@ -54,7 +60,6 @@ public class TabelaCustosIndicesRESTController {
 	@Operation (summary = "Return name of tables" )
 	@GetMapping("/REST/tabelacustosindices/nomeTabelas")	
 	public List<NomeTabelas> findNomeTabelas() {
-		System.out.println("Buscou as tabelas");
 		return tabelaCustosIndicesService.findNomeTabelas();
 	}
 	

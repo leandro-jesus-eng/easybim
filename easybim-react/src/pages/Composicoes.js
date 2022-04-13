@@ -40,23 +40,44 @@ const Composicoes = () => {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const composicoesService = new ComposicoesService();
     
+    const getComposicoes = (nomeTabela, localidade, dataPreco) => {        
+        console.log("t="+nomeTabela + " l="+ localidade+" d="+dataPreco);
+        if(nomeTabela && localidade && dataPreco)
+            composicoesService.getComposicoes(nomeTabela, localidade, dataPreco).then(data => setComposicoes(data));
+    }
+
     const [selectedNomeTabela, setSelectedNomeTabela] = useState(null);
     const [nomeTabelas, setNomeTabelas] = useState(null);
-    const onNomeTabelaChange = (e) => {
+    const onNomeTabelaChange = (e) => {   
         setSelectedNomeTabela(e.value);
+
+        composicoesService.getLocalidades(e.value.name).then(data => setLocalidades(data));        
+        composicoesService.getDataPrecos(e.value.name).then(data => setDataPrecos(data));                
+
+        getComposicoes(e.value.name, selectedLocalidade, selectedDataPreco );
     }
 
     const [selectedLocalidade, setSelectedLocalidade] = useState(null);
     const [localidades, setLocalidades] = useState(null);
     const onLocalidadeChange = (e) => {
-        setSelectedLocalidade(e.value);
+        setSelectedLocalidade(e.value);        
+        
+        getComposicoes(selectedNomeTabela.name, e.value, selectedDataPreco );
     }
 
-    useEffect(() => {
-        const composicoesService = new ComposicoesService();
-        composicoesService.getNomeTabelas(setNomeTabelas);
-        composicoesService.getComposicoes().then(data => setComposicoes(data));        
+    const [selectedDataPreco, setSelectedDataPreco] = useState(null);
+    const [dataPrecos, setDataPrecos] = useState(null);
+    const onDataPrecoChange = (e) => {
+        setSelectedDataPreco(e.value);        
+        
+        getComposicoes(selectedNomeTabela.name, selectedLocalidade, e.value );
+    }
+    
+
+    useEffect(() => {        
+        composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));                
     }, []);
 
     const formatCurrency = (value) => {
@@ -189,7 +210,7 @@ const Composicoes = () => {
             <React.Fragment>
                 <div className="my-2">
                     <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} disabled={true} />
-                    <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRows || !selectedRows.length} />
+                    <Button label={"Delete "+( (selectedRows && selectedRows.length>0)? "("+selectedRows.length+")":"" )} icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedRows || !selectedRows.length} />
                 </div>
             </React.Fragment>
         )
@@ -359,9 +380,12 @@ const Composicoes = () => {
     }
 
     const header = (
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">            
-            <Dropdown value={selectedNomeTabela} options={nomeTabelas} onChange={onNomeTabelaChange} optionLabel="name" placeholder="Selecione uma tabela" />
-            <Dropdown value={selectedLocalidade} options={localidades} onChange={onLocalidadeChange} optionLabel="name" placeholder="Selecione uma tabela" />
+        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">    
+            <div>
+                <Dropdown value={selectedNomeTabela} options={nomeTabelas} onChange={onNomeTabelaChange} optionLabel="name" placeholder="Selecione uma tabela" />
+                <Dropdown value={selectedLocalidade} options={localidades} onChange={onLocalidadeChange} placeholder="Selecione uma localidade" />
+                <Dropdown value={selectedDataPreco} options={dataPrecos} onChange={onDataPrecoChange} onplaceholder="Selecione data base" />
+            </div>        
 
             <span className="block mt-2 md:mt-0 p-input-icon-left">                
                 <i className="pi pi-search" />

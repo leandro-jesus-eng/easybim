@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import br.com.cjt.easybim.data.AbstractEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,10 @@ public class Composicao extends AbstractEntity  {
 	
 	@Id
 	private String id;
+	
+	@Field
+	private String tabelaCustosIndicesId;
+	
 	@Field
 	private String descricaoClasse;
 	@Field
@@ -69,6 +75,7 @@ public class Composicao extends AbstractEntity  {
 
 	@Field
 	@ToString.Exclude
+	@JsonManagedReference
 	private List<ItemComposicao> itensComposicao = new ArrayList<ItemComposicao>();
 
 }
