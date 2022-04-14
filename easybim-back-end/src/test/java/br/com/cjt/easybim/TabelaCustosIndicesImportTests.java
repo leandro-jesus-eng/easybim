@@ -42,11 +42,29 @@ class TabelaCustosIndicesImportTests {
 	@Test
 	void whenSave1() throws Exception {
 		
-		ClassPathResource res = new ClassPathResource("test/SINAPI_Desonerado.xls");
+		ClassPathResource res = new ClassPathResource("test/SINAPI_202202_Desonerado.xls");
 		File file = res.getFile();
 		FileInputStream fi1 = new FileInputStream(file);
 		
         MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "text/plain", fi1);
+
+        mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
+        	.andDo(MockMvcResultHandlers.print())
+        	.andDo(new ResultHandler() {				
+				@Override
+				public void handle(MvcResult result) throws Exception {
+					// desbloqueio a Thread, sei que já incluí meu registro e os outros testes devem dar conflict.					
+					threadBlocked = false;												
+				}
+			})
+        	.andExpect(MockMvcResultMatchers.status().isOk());
+
+		
+		res = new ClassPathResource("test/SINAPI_202202_Desonerado.xls");
+		file = res.getFile();
+		fi1 = new FileInputStream(file);
+		
+        mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "text/plain", fi1);
 
         mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
         	.andDo(MockMvcResultHandlers.print())
@@ -67,7 +85,7 @@ class TabelaCustosIndicesImportTests {
 	@Test
 	void whenSave2() throws Exception {
 		
-		ClassPathResource res = new ClassPathResource("test/SINAPI_Desonerado.xls");
+		ClassPathResource res = new ClassPathResource("test/SINAPI_202112_Desonerado.xls");
 		File file = res.getFile();
 		FileInputStream fi1 = new FileInputStream(file);
 		
