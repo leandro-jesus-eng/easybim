@@ -80,7 +80,7 @@ const Composicoes = () => {
     
 
     useEffect(() => {                
-        composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));                
+        composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));          
     }, []);
 
     const formatCurrency = (value) => {
@@ -106,67 +106,12 @@ const Composicoes = () => {
         setDeleteProductsDialog(false);
     }
 
-    const saveProduct = () => {
-        /*setSubmitted(true);
-
-        if (product.name.trim()) {
-            let _products = [...composicoes];
-            let _product = { ...product };
-            if (product.id) {
-                const index = findIndexById(product.id);
-
-                _products[index] = _product;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-            }
-            else {
-                _product.id = createId();
-                _product.image = 'product-placeholder.svg';
-                _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-            }
-
-            setComposicoes(_products);
-            setComposicaoDialog(false);
-            setProduct(emptyProduct);
-        }*/
-    }
-
-    const editComposicao = (composicao) => {        
-        setComposicaoDialog(true);
-    }
-
-    const confirmDeleteProduct = (composicao) => {
-        /*setProduct(product);
-        setDeleteComposicaoDialog(true);*/
-    }
-
-    const deleteProduct = () => {
+    const deleteComposicao = () => {
         /*let _products = products.filter(val => val.id !== product.id);
         setProducts(_products);
         setDeleteComposicaoDialog(false);
-        setProduct(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });*/
-    }
-
-    const findIndexById = (id) => {
-        let index = -1;
-        for (let i = 0; i < composicoes.length; i++) {
-            if (composicoes[i].codigoComposicao === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    }
-
-    const createId = () => {
-        let id = '';
-        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return id;
+        setProduct(emptyProduct);*/
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Composicao Deleted', life: 3000 });
     }
 
     const exportCSV = () => {
@@ -184,13 +129,7 @@ const Composicoes = () => {
         setSelectedProducts(null);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });*/
     }
-
-    const onCategoryChange = (e) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
-        setProduct(_product);
-    }
-
+    
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _product = { ...product };
@@ -226,34 +165,7 @@ const Composicoes = () => {
             </React.Fragment>
         )
     }
-
-    const tabelaBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Tabela</span>
-                {selectedNomeTabela.value}
-            </>
-        );
-    }
-
-    const localidadeBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Tabela</span>
-                {selectedLocalidade}
-            </>
-        );
-    }
-
-    const dataPrecoBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Tabela</span>
-                {selectedDataPreco}
-            </>
-        );
-    }
-
+    
     const codeBodyTemplate = (rowData) => {
         return (
             <>
@@ -317,8 +229,6 @@ const Composicoes = () => {
         );
     } 
 
-    
-
     const nameBodyTemplate = (rowData) => {
         return (
             <>
@@ -372,30 +282,85 @@ const Composicoes = () => {
             </>
         )
     }
+    
+    const dataTest = [{
+        label: 'F.C Barcelona',
+        expanded: true,
+        type: 'COMPOSICAO',
+        className: 'p-composicao',
+        children: [
+            {
+                label: 'F.C Barcelona',
+                expanded: true,
+                type: 'COMPOSICAO',
+                className: 'p-composicao',
+                children: [
+                    {
+                        label: 'Chelsea FC',
+                        type: 'INSUMO',
+                        className: 'p-insumo',
+                    },
+                    {
+                        label: 'F.C. Barcelona',
+                        type: 'INSUMO',
+                        className: 'p-insumo',
+                    }
+                ]
+            },
+            {
+                label: 'Real Madrid',
+                expanded: true,
+                children: [
+                    {
+                        label: 'Bayern Munich',
+                        type: 'INSUMO',
+                        className: 'p-insumo',
+                    },
+                    {
+                        label: 'Real Madrid',
+                        type: 'INSUMO',
+                        className: 'p-insumo',
+                    }
+                ]
+            }
+        ]
+    }];
 
-
-    const [composicaoDataChart, setComposicaoDataChart] = useState(null);
+    const [composicaoDataChart, setComposicaoDataChart] = useState([]);
+    let dataAux = [];
+    const getComposicaoChart = (composicao) => {        
+        dataAux = [];
+        getComposicaoChartRecursive(composicao, dataAux);
+        setComposicaoDataChart(dataAux);        
+    }
     const getComposicaoChartRecursive = (composicao, data) =>{
         if(!composicao)
-            return [];
+            return;
 
         data.push ({
+            children: [{
+                children : [],
+                label: composicao.codigoComposicao,
+                type: 'COMPOSICAO',
+                className: 'p-composicao',
+                expanded: true,                
+                data: { 'composicao': composicao },
+            }],
             label: composicao.codigoComposicao,
             type: 'COMPOSICAO',
             className: 'p-composicao',
             expanded: true,
-            data: { 'composicao': composicao },
-            children: []
+            data: { 'composicao': composicao },           
         });
+        let lastIndex = data.length - 1;
 
-        composicao.itensComposicao.forEach( (itemComposicao) => {
-                if(!data.children) data.children = [];
+        composicao.itensComposicao.forEach( (itemComposicao) => {                
                 if(itemComposicao.tipoItem == 'COMPOSICAO') {
                     // TODO buscar a composicao no servidor                    
-                    composicoesService.getComposicaoById(itemComposicao.id).then( comp => getComposicaoChartRecursive(comp , data.children) );                                                        
+                    composicoesService.getComposicaoById(itemComposicao.id).then( comp => getComposicaoChartRecursive(comp , data[lastIndex].children) );                                                        
                 } else {
-                    data.children.push( {
-                        label: composicao.codigoItem,
+                    data[lastIndex].children.push( {
+                        label: itemComposicao.codigoItem,
                         type: 'INSUMO',
                         className: 'p-insumo',
                         expanded: true,
@@ -403,29 +368,12 @@ const Composicoes = () => {
                     });
                 }
             }
-        );
-        console.log("getComposicaoChartRecursive");
-        console.log(data);
-        console.log(composicaoDataChart);
-        
-        setComposicaoDataChart(data);
+        );        
+        setComposicaoDataChart(dataAux);
     }
 
-    const getComposicaoChart = (composicao) =>{
-        if(!composicao)
-            return [];
-
-        setComposicaoDataChart([]);
-        getComposicaoChartRecursive(composicao, composicaoDataChart );
-        setComposicaoDataChart(composicaoDataChart);
-        
-        
-        //console.log("getComposicaoChart");
-        //console.log(data);        
-    }
-
-    const nodeTemplate = (node) => {        
-        if (node.type === "COMPOSICAO") {
+    const nodeTemplate = (node) => {
+        /*if (node.type === "COMPOSICAO") {
             return (
                 <div style={{ width: '200px' }}>
                     <div className="node-header">{node.label}</div>
@@ -452,8 +400,18 @@ const Composicoes = () => {
                     </div>
                 </div>
             );
-        }
+        }*/
+        return (
+            <div style={{ width: '200px' }}>
+                <div className="node-header">{node.label}</div>
+                <div className="node-content">
+                    <div>{ (node.type)? node.type: "teste" }</div>                         
+                </div>
+            </div>
+        );
     }
+
+    
 
     const actionBodyTemplate = (composicao) => {
 
@@ -512,13 +470,13 @@ const Composicoes = () => {
     const composicaoDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+            <Button label="Refresh" icon="pi pi-check" className="p-button-text" onClick={() => { console.log(composicaoDataChart); setComposicaoDataChart(composicaoDataChart); } } />
         </>
     );
     const deleteComposicaoDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteComposicaoDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteComposicao} />
         </>
     );
     const deleteProductsDialogFooter = (
@@ -556,9 +514,11 @@ const Composicoes = () => {
                     </DataTable>
 
                     <Dialog maximizable visible={composicaoDialog} style={{ width: '450px' }} header="Detalhes da Composição" modal className="p-fluid" footer={composicaoDialogFooter} onHide={hideDialog}>                        
-                        <div>
-                            <OrganizationChart value={composicaoDataChart} nodeTemplate={ (node) => nodeTemplate(node)} 
-                                selectionMode="multiple" className="composicaochart"></OrganizationChart>
+                        <div className="composicaochart">
+                            <div className="card">
+                                <OrganizationChart value={composicaoDataChart} nodeTemplate={ (node) => nodeTemplate(node)} 
+                                    selectionMode="multiple" className="composicaochart"></OrganizationChart>
+                            </div>
                         </div>
                     </Dialog>
 

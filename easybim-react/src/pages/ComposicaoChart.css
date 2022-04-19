@@ -7,7 +7,7 @@
     border: 0 none;
 }
 
-.composicaochart .p-organizationchart .node-header, .organizationchart-demo .p-organizationchart .node-content {
+.composicaochart .p-organizationchart .node-header, .composicaochart .p-organizationchart .node-content {
     padding: .5em .7rem;
 }
 

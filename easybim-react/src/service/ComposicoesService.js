@@ -49,8 +49,8 @@ export class ComposicoesService {
       return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/dataPrecos/'+nometabela);
     }   
     
-    async getComposicaoById(idComposicao) {
-      return await this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/composicoes/'+idComposicao);
+    getComposicaoById(idComposicao) {
+      return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/composicoes/'+idComposicao);
     } 
 
 
