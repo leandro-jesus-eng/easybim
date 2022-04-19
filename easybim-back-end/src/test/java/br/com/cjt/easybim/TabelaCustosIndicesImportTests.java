@@ -1,7 +1,5 @@
 package br.com.cjt.easybim;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -49,18 +47,11 @@ class TabelaCustosIndicesImportTests {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("user-file", file.getName(), "text/plain", fi1);
 
         mockMvc.perform( MockMvcRequestBuilders.multipart("/REST/tabelacustosindices").file(mockMultipartFile))
-        	.andDo(MockMvcResultHandlers.print())
-        	.andDo(new ResultHandler() {				
-				@Override
-				public void handle(MvcResult result) throws Exception {
-					// desbloqueio a Thread, sei que já incluí meu registro e os outros testes devem dar conflict.					
-					threadBlocked = false;												
-				}
-			})
+        	.andDo(MockMvcResultHandlers.print())        	
         	.andExpect(MockMvcResultMatchers.status().isOk());
 
 		
-		res = new ClassPathResource("test/SINAPI_202202_Desonerado.xls");
+		res = new ClassPathResource("test/SINAPI_202112_Desonerado.xls");
 		file = res.getFile();
 		fi1 = new FileInputStream(file);
 		

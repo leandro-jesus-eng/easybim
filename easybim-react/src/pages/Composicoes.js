@@ -8,14 +8,13 @@ import { Button } from 'primereact/button';
 import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { OrganizationChart } from 'primereact/organizationchart';
 
 import { MenuOptions } from '../components/MenuOptions';
 import { ComposicoesService } from '../service/ComposicoesService';
+import './ComposicaoChart.css'
 
 const Composicoes = () => {
     let emptyProduct = {
@@ -30,9 +29,11 @@ const Composicoes = () => {
         inventoryStatus: 'INSTOCK'
     };
 
+    const [loading, setLoading] = useState(false);
     const [composicoes, setComposicoes] = useState(null);
-    const [productDialog, setProductDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+    const [composicaoDialog, setComposicaoDialog] = useState(false);
+    const [composicaoSelected, setComposicaoSelected] = useState(null);
+    const [deleteComposicaoDialog, setDeleteComposicaoDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedRows, setSelectedRows] = useState(null);
@@ -44,8 +45,10 @@ const Composicoes = () => {
     
     const getComposicoes = (nomeTabela, localidade, dataPreco) => {        
         console.log("t="+nomeTabela + " l="+ localidade+" d="+dataPreco);
-        if(nomeTabela && localidade && dataPreco)
-            composicoesService.getComposicoes(nomeTabela, localidade, dataPreco).then(data => setComposicoes(data));
+        if(nomeTabela && localidade && dataPreco) {
+            setLoading(true);
+            composicoesService.getComposicoes(nomeTabela, localidade, dataPreco).then(data => { setComposicoes(data); setLoading(false); });            
+        }
     }
 
     const [selectedNomeTabela, setSelectedNomeTabela] = useState(null);
@@ -76,7 +79,7 @@ const Composicoes = () => {
     }
     
 
-    useEffect(() => {        
+    useEffect(() => {                
         composicoesService.getNomeTabelas().then(data => setNomeTabelas(data));                
     }, []);
 
@@ -87,16 +90,16 @@ const Composicoes = () => {
     const openNew = () => {
         setProduct(emptyProduct);
         setSubmitted(false);
-        setProductDialog(true);
+        setComposicaoDialog(true);
     }
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProductDialog(false);
+        setComposicaoDialog(false);
     }
 
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
+    const hideDeleteComposicaoDialog = () => {
+        setDeleteComposicaoDialog(false);
     }
 
     const hideDeleteProductsDialog = () => {
@@ -123,25 +126,24 @@ const Composicoes = () => {
             }
 
             setComposicoes(_products);
-            setProductDialog(false);
+            setComposicaoDialog(false);
             setProduct(emptyProduct);
         }*/
     }
 
-    const editProduct = (composicao) => {
-        /*setProduct({ ...product });
-        setProductDialog(true);*/
+    const editComposicao = (composicao) => {        
+        setComposicaoDialog(true);
     }
 
     const confirmDeleteProduct = (composicao) => {
         /*setProduct(product);
-        setDeleteProductDialog(true);*/
+        setDeleteComposicaoDialog(true);*/
     }
 
     const deleteProduct = () => {
         /*let _products = products.filter(val => val.id !== product.id);
         setProducts(_products);
-        setDeleteProductDialog(false);
+        setDeleteComposicaoDialog(false);
         setProduct(emptyProduct);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });*/
     }
@@ -229,7 +231,7 @@ const Composicoes = () => {
         return (
             <>
                 <span className="p-column-title">Tabela</span>
-                SINAPI
+                {selectedNomeTabela.value}
             </>
         );
     }
@@ -238,7 +240,7 @@ const Composicoes = () => {
         return (
             <>
                 <span className="p-column-title">Tabela</span>
-                Campo Grande
+                {selectedLocalidade}
             </>
         );
     }
@@ -247,7 +249,7 @@ const Composicoes = () => {
         return (
             <>
                 <span className="p-column-title">Tabela</span>
-                dezembro/2021
+                {selectedDataPreco}
             </>
         );
     }
@@ -371,10 +373,110 @@ const Composicoes = () => {
         )
     }
 
-    const actionBodyTemplate = (rowData) => {
+    const getComposicaoChartRecursive = (composicao, data) =>{
+        if(!composicao)
+            return [];
+
+        data.push ({
+            label: composicao.codigoComposicao,
+            type: 'COMPOSICAO',
+            className: 'p-composicao',
+            expanded: true,
+            data: { 'composicao': composicao },
+            children: []
+        });
+
+        composicao.itensComposicao.forEach( (itemComposicao) => {
+                if(!data.children) data.children = [];
+                if(itemComposicao.tipoItem == 'COMPOSICAO') {
+                    // TODO buscar a composicao no servidor                    
+                    composicoesService.getComposicaoById(itemComposicao.id).then( comp => getComposicaoChart(comp , data.children));                                                        
+                } else {
+                    data.children.push( {
+                        label: composicao.codigoItem,
+                        type: 'INSUMO',
+                        className: 'p-insumo',
+                        expanded: true,
+                        data: { 'insumo': itemComposicao },        
+                    });
+                }
+            }
+        );
+        return data;
+    }
+
+    const getComposicaoChart = (composicao, data) =>{
+        if(!composicao)
+            return [];
+
+        console.log(composicao);
+        data = getComposicaoChartRecursive(composicao, data );
+        
+        console.log(data);
+        return data;
+    }
+
+    const nodeTemplate = (node) => {        
+        if (node.type === "COMPOSICAO") {
+            return (
+                <div style={{ width: '200px' }}>
+                    <div className="node-header">{node.label}</div>
+                    <div className="node-content">
+                        <div>Descrição: {node.data.composicao.descricaoComposicao}</div>
+                        <div>Custo Mão de Obra: {node.data.composicao.custoMaoObra}</div>                            
+                        <div>Custo Material: {node.data.composicao.custoMaterial}</div>                            
+                        <div>Custo Equipamento: {node.data.composicao.custoEquipamento}</div>                            
+                        <div>Custo Serviços Terceiros: {node.data.composicao.custoServicosTerceiros}</div>         
+                        <div>Outros Custos: {node.data.composicao.custosOutros}</div>       
+                        <div>Custo Total: {node.data.composicao.custoTotal}</div>                            
+                    </div>
+                </div>
+            );
+        } else { // INSUMO
+            return (
+                <div style={{ width: '200px' }}>
+                    <div className="node-header">{node.label}</div>
+                    <div className="node-content">
+                        <div>Descrição: {node.data.insumo.descricaoItem}</div>
+                        <div>Preço Unitário: {node.data.insumo.precoUnitarioItem}  {node.data.insumo.precoUnitarioItem}</div>
+                        <div>Coeficiente: {node.data.insumo.coeficienteItem}</div>
+                        <div>Custo Total: {node.data.insumo.custoTotalItem}</div>
+                    </div>
+                </div>
+            );
+        }
+    }
+
+    const actionBodyTemplate = (composicao) => {
+
+        const itemsMenuComposicao = [
+            { 
+                label:'Árvore de fatores',
+                icon:'pi pi-fw pi-sitemap',
+                command: () => { 
+                    setComposicaoSelected(composicao); 
+                    setComposicaoDialog(true); 
+                }
+                
+            },
+            {
+                separator:true
+            },
+            {
+                label:'Criar composição própria',
+                icon:'pi pi-fw pi-sign-in',                
+                command: () => {alert(composicao.codigoComposicao)}
+            },
+            {
+                label:'Remover composição',
+                icon:'pi pi-fw pi-trash',
+                command: () => {alert(composicao.codigoComposicao)}
+            }
+        ];
+
         return (
             <>
-                <MenuOptions></MenuOptions>
+                <MenuOptions items={itemsMenuComposicao}></MenuOptions>
             </>
         );
     }
@@ -398,15 +500,15 @@ const Composicoes = () => {
          //setGlobalFilter("olá"); 
     }
     
-    const productDialogFooter = (
+    const composicaoDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
             <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
         </>
     );
-    const deleteProductDialogFooter = (
+    const deleteComposicaoDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteComposicaoDialog} />
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
         </>
     );
@@ -427,7 +529,7 @@ const Composicoes = () => {
 
                     <DataTable ref={dt}  size="small" responsiveLayout="scroll" className="datatable-responsive"
                         value={composicoes} selection={selectedRows} onSelectionChange={(e) => setSelectedRows(e.value)}
-                        dataKey="codigoComposicao" 
+                        dataKey="codigoComposicao" loading={loading}
                         paginator rows={10} rowsPerPageOptions={[10, 15, 25]} 
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -435,9 +537,6 @@ const Composicoes = () => {
                         <Column rowReorder></Column>
                         <Column body={actionBodyTemplate}></Column>
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem'}} hidden='true'></Column>                        
-                        <Column field="tabela" header="Tabela" sortable body={tabelaBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
-                        <Column field="localidade" header="Local" sortable body={localidadeBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
-                        <Column field="dataPreco" header="Base" sortable body={dataPrecoBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                        
                         <Column field="codigoComposicao" header="id" sortable body={codeBodyTemplate} headerStyle={{ width: '5%', minWidth: '2rem' }}></Column>
                         <Column field="descricaoComposicao" header="Descrição" sortable body={descricaoBodyTemplate} headerStyle={{ width: '90%', minWidth: '20rem' }}></Column>
                         <Column field="unidade" header="Med" sortable body={medidaBodyTemplate} headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>                                                
@@ -447,53 +546,14 @@ const Composicoes = () => {
                         <Column field="custoTotal" header="Total" body={custoTotalBodyTemplate} sortable headerStyle={{ width: '5%', minWidth: '5rem' }}></Column>
                     </DataTable>
 
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        {product.image && <img src={`assets/demo/images/product/${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
-                        <div className="field">
-                            <label htmlFor="name">Name</label>
-                            <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                            {submitted && !product.name && <small className="p-invalid">Name is required.</small>}
-                        </div>
-                        <div className="field">
-                            <label htmlFor="description">Description</label>
-                            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        </div>
-
-                        <div className="field">
-                            <label className="mb-3">Category</label>
-                            <div className="formgrid grid">
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                                    <label htmlFor="category1">Accessories</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                                    <label htmlFor="category2">Clothing</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                                    <label htmlFor="category3">Electronics</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                                    <label htmlFor="category4">Fitness</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="price">Price</label>
-                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                            </div>
-                            <div className="field col">
-                                <label htmlFor="quantity">Quantity</label>
-                                <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
-                            </div>
+                    <Dialog maximizable visible={composicaoDialog} style={{ width: '450px' }} header="Detalhes da Composição" modal className="p-fluid" footer={composicaoDialogFooter} onHide={hideDialog}>                        
+                        <div>
+                            <OrganizationChart value={getComposicaoChart(composicaoSelected, [])} nodeTemplate={ (node) => nodeTemplate(node)} 
+                                selectionMode="multiple" className="composicaochart"></OrganizationChart>
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                    <Dialog visible={deleteComposicaoDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteComposicaoDialogFooter} onHide={hideDeleteComposicaoDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && <span>Are you sure you want to delete <b>{product.name}</b>?</span>}

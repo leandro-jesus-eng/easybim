@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,6 +28,8 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 
 //TODO criar composições próprias baseadas no SINAPI. guardar de onde saiu, histórico
 //TODO criar insumos próprios baseadas no SINAPI. guardar de onde saiu, histórico
+
+//TODO Importar tabelas, ler os dados diretamente do arquivo compactado
 
 //TODO Insumo, adicionar MACRO Classe - importante para fazer o histograma
 //TODO Insumo, coeficiente desconhecido q está na família de insumos serve para calcular o valor baseado em um item de agregação
@@ -72,6 +76,11 @@ public class TabelaCustosIndicesService {
 						+ " localidade=" + localidade + " dataPreco=" + dataPreco));
 
 		return ltci;
+	}
+	
+	public Composicao findComposicaoById(@NotNull String id) {
+		return composicaoRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "Composicao id =" + id));
 	}
 
 	/**
@@ -242,6 +251,10 @@ public class TabelaCustosIndicesService {
 		for (ItemComposicao ic : c.getItensComposicao()) {
 			if (ic.getComposicao() != null && !savedComposicao.contains(ic.getComposicao())) {
 				saveComposicaoRecursive(ic.getComposicao());
+				ic.setId(ic.getComposicao().getId());
+			} else { 
+				if(ic.getTipoItem().equals(ConvertXlsToObj.TIPO_INSUMO))
+					ic.setId(ic.getInsumo().getId());
 			}
 		}
 		savedComposicao.add(c);

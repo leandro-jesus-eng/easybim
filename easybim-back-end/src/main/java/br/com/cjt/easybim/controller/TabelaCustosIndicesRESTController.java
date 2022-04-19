@@ -51,6 +51,12 @@ public class TabelaCustosIndicesRESTController {
 		return tabelaCustosIndicesService.findComposicoes(nameTable, localidade, dataPreco); 
 	}
 	
+	@Operation (summary = "Return composicao" )
+	@GetMapping("/REST/tabelacustosindices/composicoes/{id}")
+	public Composicao findComposicaoById(@PathVariable String id) {
+		return tabelaCustosIndicesService.findComposicaoById(id); 
+	}
+	
 	@Operation (summary = "Return dataPreco of table" )
 	@GetMapping("/REST/tabelacustosindices/dataPrecos/{nameTable}")
 	public List<String> findDataPrecos(@PathVariable  String nameTable) {		

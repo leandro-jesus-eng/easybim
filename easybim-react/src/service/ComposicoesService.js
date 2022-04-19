@@ -11,10 +11,10 @@ export class ComposicoesService {
       return axios.get(addressHttp, params)
         .then((response) => {
             console.log(response.data);
-            console.log(response.status);
-            console.log(response.statusText);
-            console.log(response.headers);
-            console.log(response.config);
+            //console.log(response.status);
+            //console.log(response.statusText);
+            //console.log(response.headers);
+            //console.log(response.config);
             return response.data;
           })
         .catch((error) => {
@@ -47,7 +47,11 @@ export class ComposicoesService {
 
     getDataPrecos(nometabela) {
       return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/dataPrecos/'+nometabela);
-    }    
+    }   
+    
+    async getComposicaoById(idComposicao) {
+      return await this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/composicoes/'+idComposicao);
+    } 
 
 
 }

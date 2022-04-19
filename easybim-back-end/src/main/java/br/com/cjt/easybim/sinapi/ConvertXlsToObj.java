@@ -69,8 +69,8 @@ public class ConvertXlsToObj {
 	static int precoUnitarioColumnIndex = 17;
 	static int custoTotalItemColumnIndex = 18;
 
-	static String TIPO_COMPOSICAO = "COMPOSICAO";
-	static String TIPO_INSUMO = "INSUMO";
+	public static String TIPO_COMPOSICAO = "COMPOSICAO";
+	public static String TIPO_INSUMO = "INSUMO";
 
 	static int codigoInsumoColumnIndex = 0;
 	static int descricaoInsumoColumnIndex = 1;
@@ -235,7 +235,7 @@ public class ConvertXlsToObj {
 				itemComposicao.setPrecoUnitarioItem(getDoubleValue(row, precoUnitarioColumnIndex));
 				itemComposicao.setCustoTotalItem(getDoubleValue(row, custoTotalItemColumnIndex));
 
-				// verificar se � uma composicao ou insumo
+				// verificar se eh uma composicao ou insumo
 				if (itemComposicao.getTipoItem().equals(TIPO_COMPOSICAO)) {
 					itemComposicao.setComposicao(getComposicaoIfExistsOrAddNew(itemComposicao.getCodigoItem()));
 				} else {

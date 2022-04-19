@@ -26,6 +26,10 @@ public class ItemComposicao {
 	private String tipoItem;
 	@Field
 	private double coeficienteItem;	
+	
+	@Field
+	private String id;
+	
 	/**
 	 * custoTotalItem = coeficienteItem * precoUnitarioItem
 	 */
