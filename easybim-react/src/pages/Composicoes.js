@@ -373,12 +373,11 @@ const Composicoes = () => {
         )
     }
 
+
+    const [composicaoDataChart, setComposicaoDataChart] = useState(null);
     const getComposicaoChartRecursive = (composicao, data) =>{
         if(!composicao)
             return [];
-
-        console.log("getComposicaoChartRecursive");
-        console.log(data);
 
         data.push ({
             label: composicao.codigoComposicao,
@@ -405,20 +404,24 @@ const Composicoes = () => {
                 }
             }
         );
-        return data;
+        console.log("getComposicaoChartRecursive");
+        console.log(data);
+        console.log(composicaoDataChart);
+        
+        setComposicaoDataChart(data);
     }
 
     const getComposicaoChart = (composicao) =>{
         if(!composicao)
             return [];
 
-        let data = [];                
-        getComposicaoChartRecursive(composicao, data );
+        setComposicaoDataChart([]);
+        getComposicaoChartRecursive(composicao, composicaoDataChart );
+        setComposicaoDataChart(composicaoDataChart);
         
         
-        console.log("getComposicaoChart");
-        console.log(data);
-        return data;
+        //console.log("getComposicaoChart");
+        //console.log(data);        
     }
 
     const nodeTemplate = (node) => {        
@@ -460,6 +463,7 @@ const Composicoes = () => {
                 icon:'pi pi-fw pi-sitemap',
                 command: () => { 
                     setComposicaoSelected(composicao); 
+                    getComposicaoChart(composicao);
                     setComposicaoDialog(true); 
                 }
                 
@@ -553,7 +557,7 @@ const Composicoes = () => {
 
                     <Dialog maximizable visible={composicaoDialog} style={{ width: '450px' }} header="Detalhes da Composição" modal className="p-fluid" footer={composicaoDialogFooter} onHide={hideDialog}>                        
                         <div>
-                            <OrganizationChart value={getComposicaoChart(composicaoSelected)} nodeTemplate={ (node) => nodeTemplate(node)} 
+                            <OrganizationChart value={composicaoDataChart} nodeTemplate={ (node) => nodeTemplate(node)} 
                                 selectionMode="multiple" className="composicaochart"></OrganizationChart>
                         </div>
                     </Dialog>
