@@ -29,7 +29,7 @@ const Composicoes = () => {
         inventoryStatus: "INSTOCK",
     };
 
-    const op = useRef(null);
+    const op = useRef([]);
 
     const [loading, setLoading] = useState(false);
     const [composicoes, setComposicoes] = useState(null);
@@ -761,39 +761,39 @@ const Composicoes = () => {
     };
 
     const nodeTemplate = (node) => {
-        //style={{ width: '200px' }}
+        
         if (node.type === "COMPOSICAO") {
             return (
-                <div onClick={(e) => op[node.data.composicao.id].current.toggle(e)}>
+                <div onClick={(e) => op.current[node.label].toggle(e)}>
                     <div className="node-header">{node.label}</div>
                     <div className="node-content">
                         <div>{node.data.composicao.descricaoComposicao.split(' ')[0]}...</div>                        
                     </div>
 
-                    <OverlayPanel ref={op[node.data.composicao.id]} showCloseIcon dismissable>
-                        <div>Descrição: {node.data.composicao.descricaoComposicao}</div>
-                        <div>Custo Mão de Obra: {node.data.composicao.custoMaoObra}</div>                            
-                        <div>Custo Material: {node.data.composicao.custoMaterial}</div>                            
-                        <div>Custo Equipamento: {node.data.composicao.custoEquipamento}</div>                            
-                        <div>Custo Serviços Terceiros: {node.data.composicao.custoServicosTerceiros}</div>         
-                        <div>Outros Custos: {node.data.composicao.custosOutros}</div>       
-                        <div>Custo Total: {node.data.composicao.custoTotal}</div> 
+                    <OverlayPanel ref={el => op.current[node.label] = el} showCloseIcon dismissable>
+                        <div style={{ maxWidth: '300px' }}><b>Descrição:</b> {node.data.composicao.descricaoComposicao}</div>
+                        <div><b>Custo Mão de Obra:</b> {node.data.composicao.custoMaoObra}</div>                            
+                        <div><b>Custo Material:</b> {node.data.composicao.custoMaterial}</div>                            
+                        <div><b>Custo Equipamento:</b> {node.data.composicao.custoEquipamento}</div>                            
+                        <div><b>Custo Serviços Terceiros:</b> {node.data.composicao.custoServicosTerceiros}</div>         
+                        <div><b>Outros Custos:</b> {node.data.composicao.custosOutros}</div>       
+                        <div><b>Custo Total:</b> {node.data.composicao.custoTotal}</div> 
                     </OverlayPanel>
                 </div>
             );
         } else { // INSUMO
             return (
-                <div onClick={(e) => op[999].current.toggle(e)}>
+                <div onClick={(e) => op.current[node.label].toggle(e)}>
                     <div className="node-header-insumo">{node.label}</div>
                     <div className="node-content-insumo">
                         {node.data.insumo.descricaoItem.split(' ')[0]}...
                     </div>
 
-                    <OverlayPanel ref={op[999]}>
-                        <div>Descrição: {node.data.insumo.descricaoItem}</div>
-                        <div>Preço Unitário: {node.data.insumo.precoUnitarioItem}</div>
-                        <div>Coeficiente: {node.data.insumo.coeficienteItem}</div>
-                        <div>Custo Total: {node.data.insumo.custoTotalItem}</div>
+                    <OverlayPanel ref={el => op.current[node.label] = el}>
+                        <div style={{ maxWidth: '300px' }}><b>Descrição:</b> {node.data.insumo.descricaoItem}</div>
+                        <div><b>Preço Unitário:</b> {node.data.insumo.precoUnitarioItem}</div>
+                        <div><b>Coeficiente:</b> {node.data.insumo.coeficienteItem}</div>
+                        <div><b>Custo Total:</b> {node.data.insumo.custoTotalItem}</div>
                     </OverlayPanel>
                 </div>
                 
@@ -899,7 +899,7 @@ const Composicoes = () => {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
                         globalFilter={globalFilter}
-                        globalFilterFields={["tabela", "localidade", "descricaoComposicao"]}
+                        globalFilterFields={["codigoComposicao", "descricaoComposicao"]}
                         emptyMessage="No registers found."
                         header={header}
                     >
