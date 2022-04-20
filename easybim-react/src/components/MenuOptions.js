@@ -4,8 +4,8 @@ import { Button } from 'primereact/button';
 
 export class MenuOptions extends Component {
 
-    constructor(props) {
-       super(props);
+    constructor() {
+       super();
     }
 
     render() {
