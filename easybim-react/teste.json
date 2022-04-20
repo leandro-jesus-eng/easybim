@@ -1,0 +1,439 @@
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "label": "36531",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "36531",
+                                "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRACAO 4 X 4, POTENCIA LIQUIDA 88 HP, PESO OPERACIONAL MINIMO DE 6674 KG, CAPACIDADE DA CARREGADEIRA DE 1,00 M3 E DA  RETROESCAVADEIRA MINIMA DE 0,26 M3, PROFUNDIDADE DE ESCAVACAO MAXIMA DE 4,37 M",
+                                "unidadeItem": "UN",
+                                "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                                "precoUnitarioItem": 435365.82,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 0.0000076,
+                                "id": "625e3da00d9cbb6582fdd815",
+                                "custoTotalItem": 3.3
+                            }
+                        }
+                    }
+                ],
+                "label": "88858",
+                "type": "COMPOSICAO",
+                "className": "p-composicao",
+                "expanded": true,
+                "data": {
+                    "composicao": {
+                        "id": "625e3da10d9cbb6582fddca8",
+                        "tabelaCustosIndicesId": "625e3d9e0d9cbb6582fdc843",
+                        "descricaoClasse": "desonerado",
+                        "siglaClasse": "CHOR",
+                        "descricaoTipo1": "COMPOSIÇÕES AUXILIARES",
+                        "siglaTipo1": "329",
+                        "codAgrupador": null,
+                        "descricaoAgrupador": null,
+                        "codigoComposicao": "88858",
+                        "descricaoComposicao": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRAÇÃO 4X4, POTÊNCIA LÍQ. 88 HP, CAÇAMBA CARREG. CAP. MÍN. 1 M3, CAÇAMBA RETRO CAP. 0,26 M3, PESO OPERACIONAL MÍN. 6.674 KG, PROFUNDIDADE ESCAVAÇÃO MÁX. 4,37 M - JUROS. AF_06/2014",
+                        "unidade": "H",
+                        "origemPreco": "COEFICIENTE DE REPRESENTATIVIDADE",
+                        "custoTotal": 3.3,
+                        "custoMaoObra": 0,
+                        "percentualMaoObra": 0,
+                        "custoMaterial": 0,
+                        "percentualMaterial": 0,
+                        "custoEquipamento": 3.3,
+                        "percentualEquipamento": 100,
+                        "custoServicosTerceiros": 0,
+                        "percentualServicosTerceiros": 0,
+                        "custosOutros": 0,
+                        "percentualOutros": 0,
+                        "percentualAtribuidoSaoPaulo": 0,
+                        "vinculo": "CAIXA REFERENCIAL",
+                        "itensComposicao": [
+                            {
+                                "codigoItem": "36531",
+                                "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRACAO 4 X 4, POTENCIA LIQUIDA 88 HP, PESO OPERACIONAL MINIMO DE 6674 KG, CAPACIDADE DA CARREGADEIRA DE 1,00 M3 E DA  RETROESCAVADEIRA MINIMA DE 0,26 M3, PROFUNDIDADE DE ESCAVACAO MAXIMA DE 4,37 M",
+                                "unidadeItem": "UN",
+                                "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                                "precoUnitarioItem": 435365.82,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 0.0000076,
+                                "id": "625e3da00d9cbb6582fdd815",
+                                "custoTotalItem": 3.3
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "children": [
+                    {
+                        "label": "36531",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "36531",
+                                "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRACAO 4 X 4, POTENCIA LIQUIDA 88 HP, PESO OPERACIONAL MINIMO DE 6674 KG, CAPACIDADE DA CARREGADEIRA DE 1,00 M3 E DA  RETROESCAVADEIRA MINIMA DE 0,26 M3, PROFUNDIDADE DE ESCAVACAO MAXIMA DE 4,37 M",
+                                "unidadeItem": "UN",
+                                "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                                "precoUnitarioItem": 435365.82,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 0.000056,
+                                "id": "625e3da00d9cbb6582fdd815",
+                                "custoTotalItem": 24.38
+                            }
+                        }
+                    }
+                ],
+                "label": "88857",
+                "type": "COMPOSICAO",
+                "className": "p-composicao",
+                "expanded": true,
+                "data": {
+                    "composicao": {
+                        "id": "625e3da10d9cbb6582fddca7",
+                        "tabelaCustosIndicesId": "625e3d9e0d9cbb6582fdc843",
+                        "descricaoClasse": "desonerado",
+                        "siglaClasse": "CHOR",
+                        "descricaoTipo1": "COMPOSIÇÕES AUXILIARES",
+                        "siglaTipo1": "329",
+                        "codAgrupador": null,
+                        "descricaoAgrupador": null,
+                        "codigoComposicao": "88857",
+                        "descricaoComposicao": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRAÇÃO 4X4, POTÊNCIA LÍQ. 88 HP, CAÇAMBA CARREG. CAP. MÍN. 1 M3, CAÇAMBA RETRO CAP. 0,26 M3, PESO OPERACIONAL MÍN. 6.674 KG, PROFUNDIDADE ESCAVAÇÃO MÁX. 4,37 M - DEPRECIAÇÃO. AF_06/2014",
+                        "unidade": "H",
+                        "origemPreco": "COEFICIENTE DE REPRESENTATIVIDADE",
+                        "custoTotal": 24.38,
+                        "custoMaoObra": 0,
+                        "percentualMaoObra": 0,
+                        "custoMaterial": 0,
+                        "percentualMaterial": 0,
+                        "custoEquipamento": 24.38,
+                        "percentualEquipamento": 100,
+                        "custoServicosTerceiros": 0,
+                        "percentualServicosTerceiros": 0,
+                        "custosOutros": 0,
+                        "percentualOutros": 0,
+                        "percentualAtribuidoSaoPaulo": 0,
+                        "vinculo": "CAIXA REFERENCIAL",
+                        "itensComposicao": [
+                            {
+                                "codigoItem": "36531",
+                                "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRACAO 4 X 4, POTENCIA LIQUIDA 88 HP, PESO OPERACIONAL MINIMO DE 6674 KG, CAPACIDADE DA CARREGADEIRA DE 1,00 M3 E DA  RETROESCAVADEIRA MINIMA DE 0,26 M3, PROFUNDIDADE DE ESCAVACAO MAXIMA DE 4,37 M",
+                                "unidadeItem": "UN",
+                                "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                                "precoUnitarioItem": 435365.82,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 0.000056,
+                                "id": "625e3da00d9cbb6582fdd815",
+                                "custoTotalItem": 24.38
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "children": [
+                    {
+                        "label": "4234",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": { "insumo": { "codigoItem": "4234", "descricaoItem": "OPERADOR DE ESCAVADEIRA", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 18.71, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3d9e0d9cbb6582fdc905", "custoTotalItem": 18.71 } }
+                    },
+                    {
+                        "label": "37370",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "37370",
+                                "descricaoItem": "ALIMENTACAO - HORISTA (COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 2.48,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3d9e0d9cbb6582fdc91f",
+                                "custoTotalItem": 2.48
+                            }
+                        }
+                    },
+                    {
+                        "label": "37371",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "37371",
+                                "descricaoItem": "TRANSPORTE - HORISTA (COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.93,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3da10d9cbb6582fdda9a",
+                                "custoTotalItem": 0.93
+                            }
+                        }
+                    },
+                    {
+                        "label": "37372",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": { "codigoItem": "37372", "descricaoItem": "EXAMES - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 0.81, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3d9f0d9cbb6582fdd0c2", "custoTotalItem": 0.81 }
+                        }
+                    },
+                    {
+                        "label": "37373",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": { "codigoItem": "37373", "descricaoItem": "SEGURO - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 0.06, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3da10d9cbb6582fdd852", "custoTotalItem": 0.06 }
+                        }
+                    },
+                    {
+                        "label": "43464",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "43464",
+                                "descricaoItem": "FERRAMENTAS - FAMILIA OPERADOR ESCAVADEIRA - HORISTA (ENCARGOS COMPLEMENTARES - COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.01,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3d9f0d9cbb6582fdd101",
+                                "custoTotalItem": 0.01
+                            }
+                        }
+                    },
+                    {
+                        "label": "43488",
+                        "type": "INSUMO",
+                        "className": "p-insumo",
+                        "expanded": true,
+                        "data": {
+                            "insumo": {
+                                "codigoItem": "43488",
+                                "descricaoItem": "EPI - FAMILIA OPERADOR ESCAVADEIRA - HORISTA (ENCARGOS COMPLEMENTARES - COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.76,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3d9f0d9cbb6582fdd076",
+                                "custoTotalItem": 0.76
+                            }
+                        }
+                    },
+                    {
+                        "children": [
+                            {
+                                "label": "4234",
+                                "type": "INSUMO",
+                                "className": "p-insumo",
+                                "expanded": true,
+                                "data": {
+                                    "insumo": { "codigoItem": "4234", "descricaoItem": "OPERADOR DE ESCAVADEIRA", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 18.71, "tipoItem": "INSUMO", "coeficienteItem": 0.0094, "id": "625e3d9e0d9cbb6582fdc905", "custoTotalItem": 0.17 }
+                                }
+                            }
+                        ],
+                        "label": "95357",
+                        "type": "COMPOSICAO",
+                        "className": "p-composicao",
+                        "expanded": true,
+                        "data": {
+                            "composicao": {
+                                "id": "625e3da10d9cbb6582fddca5",
+                                "tabelaCustosIndicesId": "625e3d9e0d9cbb6582fdc843",
+                                "descricaoClasse": "desonerado",
+                                "siglaClasse": "SEDI",
+                                "descricaoTipo1": "OUTROS",
+                                "siglaTipo1": "318",
+                                "codAgrupador": null,
+                                "descricaoAgrupador": null,
+                                "codigoComposicao": "95357",
+                                "descricaoComposicao": "CURSO DE CAPACITAÇÃO PARA OPERADOR DE ESCAVADEIRA (ENCARGOS COMPLEMENTARES) - HORISTA",
+                                "unidade": "H",
+                                "origemPreco": "COLETADO",
+                                "custoTotal": 0.17,
+                                "custoMaoObra": 0.17,
+                                "percentualMaoObra": 100,
+                                "custoMaterial": 0,
+                                "percentualMaterial": 0,
+                                "custoEquipamento": 0,
+                                "percentualEquipamento": 0,
+                                "custoServicosTerceiros": 0,
+                                "percentualServicosTerceiros": 0,
+                                "custosOutros": 0,
+                                "percentualOutros": 0,
+                                "percentualAtribuidoSaoPaulo": 0,
+                                "vinculo": "ENCARGOS COMPLEMENTARES REFERENCIAL",
+                                "itensComposicao": [
+                                    { "codigoItem": "4234", "descricaoItem": "OPERADOR DE ESCAVADEIRA", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 18.71, "tipoItem": "INSUMO", "coeficienteItem": 0.0094, "id": "625e3d9e0d9cbb6582fdc905", "custoTotalItem": 0.17 }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "label": "88294",
+                "type": "COMPOSICAO",
+                "className": "p-composicao",
+                "expanded": true,
+                "data": {
+                    "composicao": {
+                        "id": "625e3da10d9cbb6582fddca6",
+                        "tabelaCustosIndicesId": "625e3d9e0d9cbb6582fdc843",
+                        "descricaoClasse": "desonerado",
+                        "siglaClasse": "SEDI",
+                        "descricaoTipo1": "OUTROS",
+                        "siglaTipo1": "318",
+                        "codAgrupador": null,
+                        "descricaoAgrupador": null,
+                        "codigoComposicao": "88294",
+                        "descricaoComposicao": "OPERADOR DE ESCAVADEIRA COM ENCARGOS COMPLEMENTARES",
+                        "unidade": "H",
+                        "origemPreco": "COLETADO",
+                        "custoTotal": 23.93,
+                        "custoMaoObra": 18.88,
+                        "percentualMaoObra": 78.8967823,
+                        "custoMaterial": 5.05,
+                        "percentualMaterial": 21.1032177,
+                        "custoEquipamento": 0,
+                        "percentualEquipamento": 0,
+                        "custoServicosTerceiros": 0,
+                        "percentualServicosTerceiros": 0,
+                        "custosOutros": 0,
+                        "percentualOutros": 0,
+                        "percentualAtribuidoSaoPaulo": 0,
+                        "vinculo": "ENCARGOS COMPLEMENTARES REFERENCIAL",
+                        "itensComposicao": [
+                            { "codigoItem": "4234", "descricaoItem": "OPERADOR DE ESCAVADEIRA", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 18.71, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3d9e0d9cbb6582fdc905", "custoTotalItem": 18.71 },
+                            { "codigoItem": "37370", "descricaoItem": "ALIMENTACAO - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 2.48, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3d9e0d9cbb6582fdc91f", "custoTotalItem": 2.48 },
+                            { "codigoItem": "37371", "descricaoItem": "TRANSPORTE - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 0.93, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3da10d9cbb6582fdda9a", "custoTotalItem": 0.93 },
+                            { "codigoItem": "37372", "descricaoItem": "EXAMES - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 0.81, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3d9f0d9cbb6582fdd0c2", "custoTotalItem": 0.81 },
+                            { "codigoItem": "37373", "descricaoItem": "SEGURO - HORISTA (COLETADO CAIXA)", "unidadeItem": "H", "origemPrecoItem": "COLETADO", "precoUnitarioItem": 0.06, "tipoItem": "INSUMO", "coeficienteItem": 1, "id": "625e3da10d9cbb6582fdd852", "custoTotalItem": 0.06 },
+                            {
+                                "codigoItem": "43464",
+                                "descricaoItem": "FERRAMENTAS - FAMILIA OPERADOR ESCAVADEIRA - HORISTA (ENCARGOS COMPLEMENTARES - COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.01,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3d9f0d9cbb6582fdd101",
+                                "custoTotalItem": 0.01
+                            },
+                            {
+                                "codigoItem": "43488",
+                                "descricaoItem": "EPI - FAMILIA OPERADOR ESCAVADEIRA - HORISTA (ENCARGOS COMPLEMENTARES - COLETADO CAIXA)",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.76,
+                                "tipoItem": "INSUMO",
+                                "coeficienteItem": 1,
+                                "id": "625e3d9f0d9cbb6582fdd076",
+                                "custoTotalItem": 0.76
+                            },
+                            {
+                                "codigoItem": "95357",
+                                "descricaoItem": "CURSO DE CAPACITAÇÃO PARA OPERADOR DE ESCAVADEIRA (ENCARGOS COMPLEMENTARES) - HORISTA",
+                                "unidadeItem": "H",
+                                "origemPrecoItem": "COLETADO",
+                                "precoUnitarioItem": 0.17,
+                                "tipoItem": "COMPOSICAO",
+                                "coeficienteItem": 1,
+                                "id": "625e3da10d9cbb6582fddca5",
+                                "custoTotalItem": 0.17
+                            }
+                        ]
+                    }
+                }
+            }
+        ],
+        "label": "5679",
+        "type": "COMPOSICAO",
+        "className": "p-composicao",
+        "expanded": true,
+        "data": {
+            "composicao": {
+                "id": "625e3da10d9cbb6582fddcaa",
+                "tabelaCustosIndicesId": "625e3d9e0d9cbb6582fdc843",
+                "descricaoClasse": "desonerado",
+                "siglaClasse": "CHOR",
+                "descricaoTipo1": "CUSTO HORÁRIO IMPRODUTIVO DIURNO",
+                "siglaTipo1": "327",
+                "codAgrupador": null,
+                "descricaoAgrupador": null,
+                "codigoComposicao": "5679",
+                "descricaoComposicao": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRAÇÃO 4X4, POTÊNCIA LÍQ. 88 HP, CAÇAMBA CARREG. CAP. MÍN. 1 M3, CAÇAMBA RETRO CAP. 0,26 M3, PESO OPERACIONAL MÍN. 6.674 KG, PROFUNDIDADE ESCAVAÇÃO MÁX. 4,37 M - CHI DIURNO. AF_06/2014",
+                "unidade": "CHI",
+                "origemPreco": "COEFICIENTE DE REPRESENTATIVIDADE",
+                "custoTotal": 51.61,
+                "custoMaoObra": 18.88,
+                "percentualMaoObra": 36.5820577,
+                "custoMaterial": 5.05,
+                "percentualMaterial": 9.7849254,
+                "custoEquipamento": 27.68,
+                "percentualEquipamento": 53.6330169,
+                "custoServicosTerceiros": 0,
+                "percentualServicosTerceiros": 0,
+                "custosOutros": 0,
+                "percentualOutros": 0,
+                "percentualAtribuidoSaoPaulo": 0,
+                "vinculo": "CAIXA REFERENCIAL",
+                "itensComposicao": [
+                    {
+                        "codigoItem": "88294",
+                        "descricaoItem": "OPERADOR DE ESCAVADEIRA COM ENCARGOS COMPLEMENTARES",
+                        "unidadeItem": "H",
+                        "origemPrecoItem": "COLETADO",
+                        "precoUnitarioItem": 23.93,
+                        "tipoItem": "COMPOSICAO",
+                        "coeficienteItem": 1,
+                        "id": "625e3da10d9cbb6582fddca6",
+                        "custoTotalItem": 23.93
+                    },
+                    {
+                        "codigoItem": "88857",
+                        "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRAÇÃO 4X4, POTÊNCIA LÍQ. 88 HP, CAÇAMBA CARREG. CAP. MÍN. 1 M3, CAÇAMBA RETRO CAP. 0,26 M3, PESO OPERACIONAL MÍN. 6.674 KG, PROFUNDIDADE ESCAVAÇÃO MÁX. 4,37 M - DEPRECIAÇÃO. AF_06/2014",
+                        "unidadeItem": "H",
+                        "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                        "precoUnitarioItem": 24.38,
+                        "tipoItem": "COMPOSICAO",
+                        "coeficienteItem": 1,
+                        "id": "625e3da10d9cbb6582fddca7",
+                        "custoTotalItem": 24.38
+                    },
+                    {
+                        "codigoItem": "88858",
+                        "descricaoItem": "RETROESCAVADEIRA SOBRE RODAS COM CARREGADEIRA, TRAÇÃO 4X4, POTÊNCIA LÍQ. 88 HP, CAÇAMBA CARREG. CAP. MÍN. 1 M3, CAÇAMBA RETRO CAP. 0,26 M3, PESO OPERACIONAL MÍN. 6.674 KG, PROFUNDIDADE ESCAVAÇÃO MÁX. 4,37 M - JUROS. AF_06/2014",
+                        "unidadeItem": "H",
+                        "origemPrecoItem": "COEFICIENTE DE REPRESENTATIVIDADE",
+                        "precoUnitarioItem": 3.3,
+                        "tipoItem": "COMPOSICAO",
+                        "coeficienteItem": 1,
+                        "id": "625e3da10d9cbb6582fddca8",
+                        "custoTotalItem": 3.3
+                    }
+                ]
+            }
+        }
+    }
+]

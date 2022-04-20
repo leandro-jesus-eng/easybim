@@ -7,7 +7,8 @@
     border: 0 none;
 }
 
-.composicaochart .p-organizationchart .node-header, .composicaochart .p-organizationchart .node-content {
+.composicaochart .p-organizationchart .node-header, .composicaochart .p-organizationchart .node-content, 
+.composicaochart .p-organizationchart .node-header-insumo, .composicaochart .p-organizationchart .node-content-insumo {
     padding: .5em .7rem;
 }
 
@@ -25,17 +26,12 @@
     border-radius: 50%;
 }
 
-.composicaochart .p-organizationchart .department-cfo {
-    background-color: #7247bc;
-    color: #ffffff;
-}
-
-.composicaochart .p-organizationchart .department-coo {
-    background-color: #a534b6;
-    color: #ffffff;
-}
-
-.composicaochart .p-organizationchart .department-cto {
+.composicaochart .p-organizationchart .node-header-insumo {
     background-color: #e9286f;
     color: #ffffff;
 }
+.composicaochart .p-organizationchart .node-content-insumo {
+    text-align: center;
+    border: 1px solid #e9286f;
+}
+

@@ -14,7 +14,7 @@ export class ComposicoesService {
             //console.log(response.status);
             //console.log(response.statusText);
             //console.log(response.headers);
-            //console.log(response.config);
+            //console.log(response.config);            
             return response.data;
           })
         .catch((error) => {
@@ -52,6 +52,4 @@ export class ComposicoesService {
     getComposicaoById(idComposicao) {
       return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/composicoes/'+idComposicao);
     } 
-
-
 }
