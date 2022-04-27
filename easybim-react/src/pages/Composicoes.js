@@ -43,7 +43,7 @@ const Composicoes = () => {
     const dt = useRef(null);
     const composicoesService = new ComposicoesService();
 
-    const getComposicoes = (nomeTabela, localidade, dataPreco) => {        
+    const getComposicoes = (nomeTabela, localidade, dataPreco) => {
         if (nomeTabela && localidade && dataPreco) {
             setLoading(true);
             composicoesService.getComposicoes(nomeTabela, localidade, dataPreco).then((data) => {
@@ -204,14 +204,14 @@ const Composicoes = () => {
         );
     };
 
-    
+
     const [composicaoDataChart, setComposicaoDataChart] = useState([]);
     let dataAux = [];
     const getComposicaoChart = (composicao) => {
-        dataAux = [];        
+        dataAux = [];
         getComposicaoChartRecursive(composicao, dataAux);
     };
-    const  getComposicaoChartRecursive = (composicao, data) => {
+    const getComposicaoChartRecursive = (composicao, data) => {
         if (!composicao) return;
 
         data.push({
@@ -237,29 +237,29 @@ const Composicoes = () => {
                     data: { insumo: itemComposicao },
                 });
             }
-        });        
+        });
         var copia = JSON.parse(JSON.stringify(dataAux));
         setComposicaoDataChart(copia);
     };
 
     const nodeTemplate = (node) => {
-        
+
         if (node.type === "COMPOSICAO") {
             return (
                 <div onClick={(e) => op.current[node.label].toggle(e)}>
                     <div className="node-header">{node.label}</div>
                     <div className="node-content">
-                        <div>{node.data.composicao.descricaoComposicao.split(' ')[0]}...</div>                        
+                        <div>{node.data.composicao.descricaoComposicao.split(' ')[0]}...</div>
                     </div>
 
                     <OverlayPanel ref={el => op.current[node.label] = el} showCloseIcon dismissable>
                         <div style={{ maxWidth: '300px' }}><b>Descrição:</b> {node.data.composicao.descricaoComposicao}</div>
-                        <div><b>Custo Mão de Obra:</b> {node.data.composicao.custoMaoObra}</div>                            
-                        <div><b>Custo Material:</b> {node.data.composicao.custoMaterial}</div>                            
-                        <div><b>Custo Equipamento:</b> {node.data.composicao.custoEquipamento}</div>                            
-                        <div><b>Custo Serviços Terceiros:</b> {node.data.composicao.custoServicosTerceiros}</div>         
-                        <div><b>Outros Custos:</b> {node.data.composicao.custosOutros}</div>       
-                        <div><b>Custo Total:</b> {node.data.composicao.custoTotal}</div> 
+                        <div><b>Custo Mão de Obra:</b> {node.data.composicao.custoMaoObra}</div>
+                        <div><b>Custo Material:</b> {node.data.composicao.custoMaterial}</div>
+                        <div><b>Custo Equipamento:</b> {node.data.composicao.custoEquipamento}</div>
+                        <div><b>Custo Serviços Terceiros:</b> {node.data.composicao.custoServicosTerceiros}</div>
+                        <div><b>Outros Custos:</b> {node.data.composicao.custosOutros}</div>
+                        <div><b>Custo Total:</b> {node.data.composicao.custoTotal}</div>
                     </OverlayPanel>
                 </div>
             );
@@ -278,7 +278,7 @@ const Composicoes = () => {
                         <div><b>Custo Total:</b> {node.data.insumo.custoTotalItem}</div>
                     </OverlayPanel>
                 </div>
-                
+
             );
         }
     };
@@ -335,9 +335,9 @@ const Composicoes = () => {
         </div>
     );
 
-      const composicaoDialogFooter = (
+    const composicaoDialogFooter = (
         <>
-            <Button label="Close" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />            
+            <Button label="Close" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
         </>
     );
     const deleteComposicaoDialogFooter = (
@@ -346,7 +346,7 @@ const Composicoes = () => {
             <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedComposicoes} />
         </>
     );
-    
+
 
     return (
         <div className="grid crud-demo">
@@ -399,15 +399,15 @@ const Composicoes = () => {
                     <Dialog visible={deleteComposicaoDialog} style={{ width: "450px" }} header="Confirm" modal footer={deleteComposicaoDialogFooter} onHide={hideDeleteComposicaoDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {product && (
+                            {composicaoSelected && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{composicaoSelected}</b>?
                                 </span>
                             )}
                         </div>
                     </Dialog>
 
-                    
+
                 </div>
             </div>
         </div>
