@@ -37,10 +37,14 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 
 //TODO Orçamento, precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
 
-//TODO Service, testar @Transactional
-//TODO Service, evitar o uso de objetos da classe para não haver problemas de alteração de estado de objetos por requisições concorrentes
+//TODO Service, testar @Transactional para o mongoDb
+//TODO Service, evitar o uso de objetos da classe para não haver problemas de alteração de estado de objetos por requisições concorrentes 
 
 //TODO Constroller, testar se a API é idempotent rest
+//TODO Controller, customizar o tratamento de erros
+//TODO Controller, implementar paginação dos listAll, alterar os repository para extender de paginação
+
+//TODO Repository, testar se as querys são geradas automaticamente quando utilizado o findBy'nome do campo' 
 
 @Service
 @Transactional

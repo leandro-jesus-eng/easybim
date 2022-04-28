@@ -2,6 +2,14 @@
     overflow-x: auto;
 }
 
+.composicaochart .p-organizationchart .p-organizationchart-node-content {
+    padding: 0rem;
+}
+
+.composicaochart .p-organizationchart-table > tbody > tr > td {
+    padding: 0 0.1rem;
+}
+
 .composicaochart .p-organizationchart .p-person {
     padding: 0;
     border: 0 none;
@@ -9,7 +17,7 @@
 
 .composicaochart .p-organizationchart .node-header, .composicaochart .p-organizationchart .node-content, 
 .composicaochart .p-organizationchart .node-header-insumo, .composicaochart .p-organizationchart .node-content-insumo {
-    padding: .5em .7rem;
+    padding: .2em .7rem;
 }
 
 .composicaochart .p-organizationchart .node-header {
