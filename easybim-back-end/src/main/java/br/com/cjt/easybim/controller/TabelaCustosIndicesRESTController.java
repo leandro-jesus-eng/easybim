@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,13 +24,14 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("tabelacustosindices")
 public class TabelaCustosIndicesRESTController {
 
 	@Autowired
 	private TabelaCustosIndicesService tabelaCustosIndicesService;
 
 	@Operation (summary = "Upload SINAPI table" )
-	@PostMapping("/REST/tabelacustosindices")
+	@PostMapping
 	@ResponseStatus(value = HttpStatus.OK)
 	public void handleFileUpload(@RequestParam("user-file") MultipartFile file, RedirectAttributes redirectAttributes) {		
 		try {
@@ -40,39 +42,44 @@ public class TabelaCustosIndicesRESTController {
 	}
 	
 	@Operation (summary = "Return tables" )
-	@GetMapping("/REST/tabelacustosindices")
+	@GetMapping
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<TabelaCustosIndices> find(String nameTable, String localidade, String dataPreco) {		
 		return tabelaCustosIndicesService.find(nameTable, localidade, dataPreco); 
 	}
 	
 	@Operation (summary = "Return composicao" )
-	@GetMapping("/REST/tabelacustosindices/composicoes")
+	@GetMapping("/composicoes")
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<Composicao> findComposicao(String nameTable, String localidade, String dataPreco) {
 		return tabelaCustosIndicesService.findComposicoes(nameTable, localidade, dataPreco); 
 	}
 	
 	@Operation (summary = "Return composicao" )
-	@GetMapping("/REST/tabelacustosindices/composicoes/{id}")
+	@GetMapping("/composicoes/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
 	public Composicao findComposicaoById(@PathVariable String id) {
 		return tabelaCustosIndicesService.findComposicaoById(id); 
 	}
 	
 	@Operation (summary = "Return dataPreco of table" )
-	@GetMapping("/REST/tabelacustosindices/dataPrecos/{nameTable}")
+	@GetMapping("/dataPrecos/{nameTable}")
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> findDataPrecos(@PathVariable  String nameTable) {		
 		return tabelaCustosIndicesService.findDataPrecos(nameTable); 
 	}
 	
 	@Operation (summary = "Return name of tables" )
-	@GetMapping("/REST/tabelacustosindices/nomeTabelas")	
+	@GetMapping("/nomeTabelas")
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<NomeTabelas> findNomeTabelas() {
 		return tabelaCustosIndicesService.findNomeTabelas();
 	}
 	
 	@Operation (summary = "Return localidades of tables" )
-	@GetMapping("/REST/tabelacustosindices/localidades/{nameTable}")
+	@GetMapping("/localidades/{nameTable}")
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> findLocalidades(@PathVariable String nameTable) {
 		return tabelaCustosIndicesService.findLocalidades(nameTable);
-	}
-	
+	}	
 }

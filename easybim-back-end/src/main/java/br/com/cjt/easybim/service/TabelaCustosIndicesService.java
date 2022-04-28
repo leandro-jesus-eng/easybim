@@ -37,8 +37,10 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 
 //TODO Orçamento, precisa confrontar o atribuído a São Paulo, adicionar o percentual atribuído a São Paulo
 
-//TODO testar @Transactional
-//TODO Service, evitar o uso de objetos da classe para não haver problemas de alteração de estado de objetos por requisições concorrentes 
+//TODO Service, testar @Transactional
+//TODO Service, evitar o uso de objetos da classe para não haver problemas de alteração de estado de objetos por requisições concorrentes
+
+//TODO Constroller, testar se a API é idempotent rest
 
 @Service
 @Transactional

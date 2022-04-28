@@ -38,18 +38,18 @@ export class ComposicoesService {
     }
 
     getNomeTabelas() {
-        return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/nomeTabelas');        
+        return this.getDataFromApi('http://localhost:8080/tabelacustosindices/nomeTabelas');        
     }
 
     getLocalidades(nometabela) {
-        return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/localidades/'+nometabela);
+        return this.getDataFromApi('http://localhost:8080/tabelacustosindices/localidades/'+nometabela);
     }
 
     getDataPrecos(nometabela) {
-      return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/dataPrecos/'+nometabela);
+      return this.getDataFromApi('http://localhost:8080/tabelacustosindices/dataPrecos/'+nometabela);
     }   
     
     getComposicaoById(idComposicao) {
-      return this.getDataFromApi('http://localhost:8080/REST/tabelacustosindices/composicoes/'+idComposicao);
+      return this.getDataFromApi('http://localhost:8080/tabelacustosindices/composicoes/'+idComposicao);
     } 
 }
