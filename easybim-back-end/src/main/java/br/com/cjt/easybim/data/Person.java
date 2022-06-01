@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -38,6 +39,7 @@ public class Person extends AbstractEntity {
 	private String id;
 	
 	@Field // @Column
+	@NotBlank	
 	private String firstName;
 	
 	@Field // @Column  (columnDefinition = "VARCHAR(512)")
@@ -61,5 +63,4 @@ public class Person extends AbstractEntity {
 	@ToString.Exclude // Não gera toString() para entrar em loop com a outra clasee q também tem referência para cá.
 	//@JsonManagedReference // para evitar loop no momento q vai serializar o objeto
 	private Set<PersonAddress> personAddresses = new HashSet<PersonAddress>();
-
 }

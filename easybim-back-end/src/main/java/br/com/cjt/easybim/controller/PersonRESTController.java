@@ -2,6 +2,8 @@ package br.com.cjt.easybim.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.cjt.easybim.data.Person;
 import br.com.cjt.easybim.service.PersonService;
@@ -34,9 +37,13 @@ public class PersonRESTController {
 
 	@Operation (summary = "Save or update a person" )
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	//@RequestMapping(value = "/REST/person", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Person save(@RequestBody Person person) {
+	public Person save(@RequestBody @Valid Person person, UriComponentsBuilder uriBulBuilder) {		
+		//--- Para respeitar as regras do HttpStatus.CREATED devemos retornar a URI do novo recurso criado
+		//--- verificar no postman se ele está fazendo isso
+		//Person personSaved = personService.save(person);		
+		//URI uri = uriBulBuilder.path("/{id}").buildAndExpand(personSaved.getId()).toUri();
+		//return ResponseEntity.created(uri).body(personSaved);		
 		return personService.save(person);
 	}
 
@@ -60,10 +67,8 @@ public class PersonRESTController {
 	
 	@Operation (summary = "Return all people by first name" )
 	@GetMapping("/firstname/{firstName}")
-	public List<Person> findByFirstName(@PathVariable String firstName) {
-		
-		List<Person> p = personService.findByFirstName(firstName); 
-		
+	public List<Person> findByFirstName(@PathVariable String firstName) {		
+		List<Person> p = personService.findByFirstName(firstName);		
 		return p;
 	}
 }

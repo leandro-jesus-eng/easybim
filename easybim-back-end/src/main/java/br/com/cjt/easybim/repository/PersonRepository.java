@@ -12,4 +12,6 @@ public interface PersonRepository extends MongoRepository<Person, String>, Entit
 	
 	@Query("{ 'firstName' : { $regex : \"?0\"} }") // q tenha a string em algum lugar do nome	 
 	public Optional<List<Person>> findByFirstName(String firstName);
+	
+	public Optional<List<Person>> findByLastName(String lastName);
 }

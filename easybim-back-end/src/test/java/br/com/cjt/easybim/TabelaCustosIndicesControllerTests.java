@@ -1,5 +1,12 @@
 package br.com.cjt.easybim;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -7,7 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.cjt.easybim.controller.exception.ResourceNotFoundException;
+import br.com.cjt.easybim.data.Country;
+import br.com.cjt.easybim.data.Gender;
+import br.com.cjt.easybim.data.Person;
+import br.com.cjt.easybim.data.PersonAddress;
+import br.com.cjt.easybim.service.PersonService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -19,9 +39,12 @@ class TabelaCustosIndicesControllerTests {
 	@Autowired
 	MockMvc mockMvc;
 	
+	@Autowired
+	PersonService personService;
+	
 	@Test
 	void whenFindAll() throws Exception {
-		/*createData();
+		createData();
 		
 		mockMvc.perform( MockMvcRequestBuilders
 			      .get("/REST/person")
@@ -33,12 +56,12 @@ class TabelaCustosIndicesControllerTests {
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty())
 			      .andExpect(MockMvcResultMatchers.jsonPath("$.[*].personAddresses[*]").isNotEmpty());
 		
-		destroyData();*/
+		destroyData();
 	}
 	
 	@Test
 	void whenFindById() throws Exception {
-		/*createData();
+		createData();
 		
 		Person person;
 		Calendar c = Calendar.getInstance();		
@@ -74,12 +97,12 @@ class TabelaCustosIndicesControllerTests {
 			      	.andDo(MockMvcResultHandlers.print())
 			      	.andExpect(MockMvcResultMatchers.status().isNoContent());		
 		
-		destroyData();*/
+		destroyData();
 	}
 	
 	@Test
 	void whenReplace() throws Exception {
-		/*createData();
+		createData();
 		
 		Person person;
 		Calendar c = Calendar.getInstance();		
@@ -129,13 +152,13 @@ class TabelaCustosIndicesControllerTests {
 			      	.andDo(MockMvcResultHandlers.print())
 			      	.andExpect(MockMvcResultMatchers.status().isMethodNotAllowed());
 		
-		destroyData();*/
+		destroyData();
 	}
 	
 	
 	@Test
 	void whenDelete() throws Exception {
-		/*createData();
+		createData();
 		
 		Person person;
 		Calendar c = Calendar.getInstance();		
@@ -178,12 +201,12 @@ class TabelaCustosIndicesControllerTests {
 			      	.andDo(MockMvcResultHandlers.print())
 			      	.andExpect(MockMvcResultMatchers.status().isNoContent());		
 		
-		destroyData();*/
+		destroyData();
 	}
 	
 	@Test
 	void whenFindByFirstName() throws Exception {
-		/*createData();
+		createData();
 		
 		// procura todos q tenham a letra i no nome
 		mockMvc.perform( MockMvcRequestBuilders
@@ -203,7 +226,7 @@ class TabelaCustosIndicesControllerTests {
 			      	.andExpect(MockMvcResultMatchers.status().isNoContent());		
 		
 		
-		destroyData();*/
+		destroyData();
 	}
 
 	@BeforeAll
@@ -212,5 +235,13 @@ class TabelaCustosIndicesControllerTests {
 	
 	@AfterAll
 	private void destroyData() {		
+	}
+	
+	public static String asJsonString(final Object obj) {
+	    try {
+	        return new ObjectMapper().writeValueAsString(obj);
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
 	}
 }

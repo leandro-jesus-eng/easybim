@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,9 @@ import br.com.cjt.easybim.sinapi.data.TabelaCustosIndices;
 //TODO Constroller, testar se a API é idempotent rest
 //TODO Controller, customizar o tratamento de erros
 //TODO Controller, implementar paginação dos listAll, alterar os repository para extender de paginação
+//TODO Controller, adicionar validação dos campos, no controller e via JPA
+
+//TODO Security, adicionar segurança, nos endpoits e nos testes
 
 //TODO Repository, testar se as querys são geradas automaticamente quando utilizado o findBy'nome do campo' 
 
@@ -150,8 +155,8 @@ public class TabelaCustosIndicesService {
 
 		return localidadesList;
 	}
-
-	public List<Composicao> findComposicoes(String nameTable, String localidade, String dataPreco) {
+	
+	public Page<Composicao> findComposicoes(String nameTable, String localidade, String dataPreco, Pageable pagination) {
 		List<TabelaCustosIndices> ltci = find(nameTable, localidade, dataPreco);
 
 		if (ltci == null || ltci.size() == 0)
@@ -159,7 +164,7 @@ public class TabelaCustosIndicesService {
 					+ " dataPreco=" + dataPreco);
 		
 		return composicaoRepository
-				.find(ltci.get(0).getId())
+				.findByTabelaCustosIndicesId(ltci.get(0).getId(), pagination)
 				.orElseThrow(() -> new ResourceNotFoundException(COULD_NOT_FIND + "Composicao - tabelaCustosIndicesId=" + ltci.get(0).getId() )); 		
 
 		/*BasicQuery query = new BasicQuery("tabelaCustosIndicesId : '"+ltci.get(0).getId()+"'");		
@@ -167,7 +172,7 @@ public class TabelaCustosIndicesService {
 				.stream(mongoTemplate.find(query, Composicao.class, "composicao").spliterator(), false)
 				.collect(Collectors.toList());*/		
 		
-		/*Bson filter = Filters.eq("tabelaCustosIndicesId", ltci.get(0).getId());
+		/*Bson filter = Filters.eq("tabelaCustosIndicesId", ltci.get(0).get	Id());
 		Bson projection = Projections.fields(Projections.include("composicao") );				
 		return StreamSupport
 				.stream(mongoTemplate.getCollection("composicao").find(filter,  Composicao.class).projection(projection).spliterator(), false)
